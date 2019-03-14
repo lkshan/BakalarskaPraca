@@ -1,0 +1,16 @@
+\chapter*{Úvod} % chapter* je necislovana kapitola
+\addcontentsline{toc}{chapter}{Úvod} % rucne pridanie do obsahu
+\markboth{Úvod}{Úvod} % vyriesenie hlaviciek
+
+Neurónová sieť predstavuje druh výpočtového modelu, ktorý je zostavený na základe abstrakcie vlastností biologických nervových systémov. Základnou jednotkou neurónovej siete je model neurónu s $N$ vstupmi a $M$ výstupmi, ktorý spracúva informáciu podľa predom definovaných pravidiel. Trénovanie neurónovej siete predstavuje úpravu váh za účelom minimalizovania chyby výpočtu neurónovej siete. V súčastnosti je trénovanie neurónovej siete vykonávané za pomoci zostupného gradientu (z angl. gradient descent). %Váhy sú upravované v smere negatívneho gradientu krivky chybovej funkcie. 
+
+Gradient je vektor parciálnych derivácií 1. rádu podľa jednotlivých premenných. Gradient je šírený neurónovou sieťou v spätnom smere výpočtového toku. Hodnota gradientu je vyrátavaná každou vrstvou neurónovej siete na základe chyby predikcie a skutočnej hodnoty (supervízie). Pre získanie gradientu je nevyhnutné úplne dokončenie doprednej transformácie vstupných dát. Tento proces môže v prípade hlbokých neurónových sieti vyžadovať veľké množstvo výpočtového času. 
+
+Úprava váh je realizovateľná až po obdržaní gradientu od vyšších vrstiev neurónovej siete. Jednotlivé vrstvy sú schopné úpravy váh už po transformácií dát. Úpravu váh však nie je možné vykonať, vzhľadom na absenciu gradientu, obdržaného od vyššej vrstvy. Závislosť vrstiev medzi sebou núti vrstvy ktoré dokončili doprednú transformáciu čakať, pokiaľ neobdržia hodnotu gradientu od vyšších vrstiev.
+
+Cieľom tejto práce je ukázať spôsob ako poskytnúť gradient vrstvám neurónovej siete, ktoré dokončili
+doprednú transformáciu a tak im umožniť okamžitú úpravu váh. Táto úloha je realizovateľná pomocou modulov syntetického gradientu, ktoré poskytujú aproximovanú verziu skutočného gradientu (syntetický gradient). Jedná sa o modely jednoduchých neurónových sieti ktorých úlohou je aproximovať skutočný gradient a jeho hodnotu poskytovať jednotlivým vrstvám neurónovej siete. 
+
+Predmetom skúmania je vplyv syntetického gradientu v reziduálnych neurónových sieťach. Domnievame sa, že reziduálne neurónové siete, vzhľadom na ich hĺbku, môžu prispieť k pochopeniu vplyvu syntetického gradientu na generatívne modely vykonávajúce predikciu identity. Zameriame sa predovšetkým na reziduálne siete, ktoré kalibrujú cytometrické dáta. Bližšie sa oboznámime s problematikou cytometrickej analýzy a využitia hlbokého strojového učenia v tejto oblasti.
+
+V nasledujúcej Kapitole je detailne rozpracované vysvetlenie fundamentálnych vlastností syntetického gradientu a spôsobu jeho implementácie. V Kapitole \ref{ResNet_kap2} sme opísali fungovanie reziduálnych sieti a ich možnosti implementácie. Kapitola \ref{DeepCyTOF_kap3} sa zaoberá metódami cytometrickej analýzy, spôsobom klasifikácie buniek z krvných vzoriek a detailne opisuje spôsob automatického gatingu pomocou metódy DeepCyTOF.

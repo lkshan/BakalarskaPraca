@@ -1,0 +1,340 @@
+\documentclass[12pt, twoside]{book}
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=3.5cm,right=2cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{multirow}
+\usepackage[hidelinks,breaklinks]{hyperref}
+\usepackage[slovak]{babel} % vypnite pre prace v anglictine
+\usepackage[inline]{enumitem}
+\usepackage{mathtools}
+\usepackage{verbatim}
+\usepackage[toc,page]{appendix}
+\usepackage{placeins}
+\usepackage{emptypage}
+\usepackage{mathabx}
+
+
+\usepackage{scalerel,stackengine}
+\stackMath
+\newcommand\reallywidehat[1]{%
+\savestack{\tmpbox}{\stretchto{%
+  \scaleto{%
+    \scalerel*[\widthof{\ensuremath{#1}}]{\kern-.6pt\bigwedge\kern-.6pt}%
+    {\rule[-\textheight/2]{1ex}{\textheight}}%WIDTH-LIMITED BIG WEDGE
+  }{\textheight}% 
+}{0.5ex}}%
+\stackon[1pt]{#1}{\tmpbox}%
+}
+\parskip 1ex
+
+\newcommand{\itab}[1]{\hspace{0em}\rlap{#1}}
+\newcommand{\tab}[1]{\hspace{.31\textwidth}\rlap{#1}}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\linespread{1.25} % hodnota 1.25 by mala zodpovedat 1.5 riadkovaniu
+
+% -------------------
+% --- Definicia zakladnych pojmov
+% --- Vyplnte podla vasho zadania
+% -------------------
+\def\mfrok{2018}
+\def\mfnazov{Syntetický gradient v neurónových sieťach}
+\def\mftyp{Priebežná správa o riešení BP1}
+\def\mfautor{Lukáš Haninčík}
+\def\mfskolitel{Mgr. Tomáš Jarábek}
+
+%ak mate konzultanta, odkomentujte aj jeho meno na titulnom liste
+\def\mfkonzultant{tit. Meno Priezvisko, tit. }  
+
+\def\mfmiesto{Bratislava, \mfrok}
+
+%aj cislo odboru je povinne a je podla studijneho odboru autora prace
+\def\mfodbor{9.2.1 Informatika} 
+\def\program{ Informatika }
+\def\mfpracovisko{ Ústav informatiky, informačných systémov \\ 
+& a softvérového inžinierstva, FIIT STU, \\
+& Bratislava }
+
+\begin{document}     
+\frontmatter
+
+
+% -------------------
+% --- Obalka ------
+% -------------------
+\begin{comment}
+\thispagestyle{empty}
+
+\begin{center}
+\sc\large
+Univerzita Komenského v Bratislave\\
+Fakulta matematiky, fyziky a informatiky
+
+\vfill
+
+{\LARGE\mfnazov}\\
+\mftyp
+\end{center}
+
+\vfill
+
+{\sc\large 
+\noindent \mfrok\\
+\mfautor
+}
+
+\eject % EOP i
+\end{comment}
+
+% --- koniec obalky ----
+
+% -------------------
+% --- Titulný list
+% -------------------
+
+\thispagestyle{empty}
+\noindent
+
+\begin{center}
+%\sc  
+\large
+Slovenská technická univerzita v Bratislave\\
+Fakulta informatiky a informačných technológií
+
+\vfill
+Lukáš Haninčík \\
+{\sc\LARGE\mfnazov}\\
+\mftyp
+\end{center}
+
+\vfill
+
+\noindent
+\begin{tabular}{ll}
+Študijný program: & \program \\
+Študijný odbor: & \mfodbor \\
+Školiace pracovisko: & \mfpracovisko \\
+Školiteľ: & \mfskolitel \\
+December 2018
+% Konzultant: & \mfkonzultant \\
+\end{tabular}
+
+%\vfill
+
+
+%\noindent \mfmiesto\\
+%\mfautor
+
+\eject % EOP i
+
+
+% --- Koniec titulnej strany
+
+
+% -------------------
+% --- Zadanie z AIS
+% -------------------
+% v tlačenej verzii s podpismi zainteresovaných osôb.
+% v elektronickej verzii sa zverejňuje zadanie bez podpisov
+
+
+\newpage 
+\afterpage{\null\thispagestyle{empty}\newpage}
+
+\thispagestyle{empty}
+\hspace{-3.5cm}\includegraphics[width=1.25\textwidth]{images/zadanie}
+
+% --- Koniec zadania
+
+\frontmatter
+
+% -------------------
+%   Čestné vyhlásenie
+% -------------------
+
+\setcounter{page}{3}
+\newpage 
+~
+\section*{Čestné vyhlásenie}
+\vfill
+Čestne vyhlasujem, že som túto prácu vypracoval samostatne, na základe konzultácií a s použitím uvedenej literatúry.
+
+\parbox{\textwidth}{
+    \centering\\
+    \vspace{2cm}
+
+    \parbox{7cm}{
+      \centering
+      \rule{0cm}{1pt}\\
+      V Bratislave, \today
+    }
+    \hfill
+    \parbox{7cm}{
+      \centering
+      \rule{5cm}{1pt}\\
+       Lukáš Haninčík 
+    }
+}
+\newpage 
+\afterpage{\null\thispagestyle{empty}\newpage}
+% --- Koniec čestného vyhlísenia
+
+% -------------------
+%   Poďakovanie - nepovinné
+% -------------------
+ 
+~
+
+\vfill
+{\bf Poďakovanie:} Touto cestou by som sa chcel poďakovať svojmu školiteľovi Mgr. Tomášovi Jarábkovi za odbornú pomoc a usmernenie pri písani mojej práce, za cenné rady, informácie a v neposlednom rade, za ochotu riešiť problémové situácie.
+\newpage 
+\afterpage{\null\thispagestyle{empty}\newpage}
+
+% --- Koniec poďakovania
+
+% -------------------
+%   Abstrakt - Slovensky
+% -------------------
+\section*{Anotácia}
+Slovenská technická univerzita v Bratislave
+\newline
+FAKULTA INFORMATIKY A INFORMAČNÝCH TECHNOLÓGIÍ
+\newline
+\itab{Študijný program:}    \tab{Informatika}
+\begin{table}[h!]
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}ll}
+Autor: & Lukáš Haninčík \\
+Bakalárska práca: & Syntetický gradient v neurónových sieťach \\
+Vedúci bakalárskej práce: & Mgr. Tomáš Jarábek \\
+December 2018
+\end{tabular}
+\end{table}
+\newline
+\newline
+Neurónové siete ako výpočtový model sa na základe experimentov ukázali ako vhodný prostriedok na aproximáciu zložitých matematických funkcií. Zvyšovanie presnosti aproximácie je dosiahnuté trénovaním neurónovej siete. Vo fáze trénovania neurónových sieti dochádza k neefektívnemu prístupu k jednotlivým vrstvám danej neurónovej siete. Neefektívny prístup predstavuje neúplne využívanie zdrojov neurónovej siete, pri ktorom sa v trénovanom modeli nachádzajú nečinné prvky. V tejto práci sme sa zamerali na zefektívnenie prístupu k jednotlivým vrstvám neurónovej siete vo fáze trénovania. Namiesto algoritmu, ktorý v procese trénovania sekvenčne zapájal jednotlivé vrstvy neurónovej siete, sme použili algoritmus ktorý paralelizuje proces trénovania týchto vrstiev. Paralelizovanie procesu trénovania jednotlivých vrstiev je realizované pomocou modulov, ktoré poskytujú vrstvám všetky potrebné informácie na úpravu ich váh. Predmetom nášho skúmania je vplyv implementácie týchto modulov na presnosť hlbokých reziduálnych sieti. Skúmanú reziduálnu sieť sme využili na kalibráciu cytometrických dát v procese klasifikovania ľudských buniek z cytometrickej dátovej sady. 
+
+%\paragraph*{Kľúčové slová:} jedno, druhé, tretie (prípadne štvrté, piate)
+% --- Koniec Abstrakt - Slovensky
+
+
+% -------------------
+% --- Abstrakt - Anglicky 
+% -------------------
+\newpage 
+\afterpage{\null\thispagestyle{empty}\newpage}
+\section*{Annotation}
+Slovak University of Technology Bratislava
+\newline
+FACULTY OF INFORMATICS AND INFORMATION TECHNOLOGIES
+\newline
+\itab{Degree course:}    \tab{Informatics}
+\begin{table}[h!]
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}p{45mm}l}
+Author: & Lukáš Haninčík \\
+Bachelor’s Thesis: & Synthetic gradient in neural networks \\
+Supervisor: & Mgr. Tomáš Jarábek \\
+December 2018
+\end{tabular}
+\end{table}
+\newline
+\newline
+Neural networks as a computation model have proved as an appropriate instrument for approximation of complex mathematical functions. Improving approximation accuracy is achieved by training the neural network. In the phase of neural network training leads to inefficient approach to the individual layers of the neural network. An ineffective approach presents the incomplete usage of neural network resources. In the training phase, inactive modules occure in trained model. In this work, we focused on streamlining approach to individual layers of the neural network during the training phase. Instead of algorithm which engaged individual layers sequentially in the training phase, we use algorithm which is paralleling the process of the layer training. The parallelization of training process of individual layers is carried out using modules that provide all necessary informations to layers for adjusting their weights. Our research is focusing to impact of these modules on the accuracy of the deep residual networks. The investigated residual network was used to calibrate cytometric data of the human cells in classification process. Calibrated humman cells are further used for classification of their types.
+
+\newpage 
+\afterpage{\null\thispagestyle{empty}\newpage}
+% --- Koniec Abstrakt - Anglicky
+
+% -------------------
+% --- Predhovor - v informatike sa zvacsa nepouziva
+% -------------------
+%\newpage 
+%\thispagestyle{empty}
+%
+%\huge{Predhovor}
+%\normalsize
+%\newline
+%Predhovor je všeobecná informácia o práci, obsahuje hlavnú charakteristiku práce 
+%a okolnosti jej vzniku. Autor zdôvodní výber témy, stručne informuje o cieľoch 
+%a význame práce, spomenie domáci a zahraničný kontext, komu je práca určená, 
+%použité metódy, stav poznania; autor stručne charakterizuje svoj prístup a svoje 
+%hľadisko. 
+%
+% --- Koniec Predhovor
+
+
+% -------------------
+% --- Obsah
+% -------------------
+
+\tableofcontents
+
+% ---  Koniec Obsahu
+
+% -------------------
+% --- Zoznamy tabuliek, obrázkov - nepovinne
+% -------------------
+
+\newpage 
+
+\listoffigures
+\listoftables
+
+% ---  Koniec Zoznamov
+
+\mainmatter
+
+
+\input uvod.tex 
+
+\input SyntGrad_kap1.tex
+
+\input ResNets_kap2.tex
+
+\input DeepCyTOF_kap3.tex
+
+\input navrh_riesenia.tex
+
+%\input zaver.tex
+
+
+% -------------------
+% --- Bibliografia
+% -------------------
+
+
+\newpage	
+
+%\backmatter
+
+\thispagestyle{empty}
+\nocite{*}
+\clearpage
+
+\bibliographystyle{plain}
+\bibliography{library} 
+
+% -------------------
+%--- Prilohy---
+% -------------------
+
+%Nepovinná časť prílohy obsahuje materiály, ktoré neboli zaradené priamo  do textu. Každá príloha sa začína na novej strane.
+%Zoznam príloh je súčasťou obsahu.
+%
+%\addcontentsline{toc}{chapter}{Appendix A}
+%\input AppendixA.tex
+%
+%\addcontentsline{toc}{chapter}{Appendix B}
+%\input AppendixB.tex
+\input appendix.tex
+
+\end{document}
+
+
+
+
+
+
