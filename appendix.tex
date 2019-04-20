@@ -167,6 +167,42 @@ stochastické vynechávanie prepojenia (dropout)& Obr. \ref{fig:achitectures_of_
 
 \end{table}
 
+\chapter{Implementácia odšumujúceho autoenkódera}
+\label{implementation_DAE}
+
+\section{Trénovanie odšumujúceho autoenkódera}
+\label{train_DAE}
+
+Funkcia trénovania odšumujúceho autoenkódera (DAE) \mintinline{Python}{trainDAE()} je obsiahnutá v súbore \mintinline{Python}{denoisingAutoEncoder.py}. Funkcia ako parametre prijíma referenčnú vzorku, cestu k jednotlivým vzorkám dátovej sady, identifikátor referenčnej vzorky, zoznam vzoriek ktoré je možné použiť na trénovanie, identifikátory relevantných markerov, formát súboru v ktorom sú vzorky uložené, miera zašumenia vzoriek pri trénovaní DAE, identifikátor potreby odšumenia dát, identifikátor potreby trénovania nového DAE a cesta, kde bude nový DAE uložený. 
+
+V prvej fáze trénovania DAE sú načítané všetky vzorky dátovej sady (okrem referenčnej vzorky) do pamäte a následne sú vyselektované tie záznamy, ktoré neobsahujú prázdne hodnoty. Načítané vzorky sú normalizované logaritmickou tranformáciou definovanou ako opisuje výraz \ref{log_transf}. Normalizované vzorky z dátovej sady sú následne spojené s referenčnou vzorkou za účelom rozšírenia rozmanitosť dátovej sady.  Následne je z novovytvorenej dátovej sady (združujúcej referenčnú vzorku a všetky vzorky z dátovej sady) vytvorená kópia ktorá je zašumená mierou zašumenia definovanou pri volaní funkcie \mintinline{Python}{trainDAE()}. Zašumená dátová sada predstavuje trénovaciu sadu určenú na trénovanie DAE, zatiaľ čo pôvodná dátová sada je použitá pri vypočítavaní hodnoty chyby predikcie ako cieľová vzorka (supervízia).
+
+Ak je nie je potrebné trénovať nový DAE, tak autoenóder je načítaný z disku. V opačnom prípade je DAE zostrojený pomocou jednej vstupnej vrstvy (inštancia triedy \mintinline{Python}{Input}, obsiahnutej v knižnici \mintinline{Python}{Keras}) a troch plne-prepojených váhových vrstiev (inštancia triedy \mintinline{Python}{Dense}, obsiahnutej v knižnici \mintinline{Python}{Keras}). Všetky skryté vrstvy disponujú $l_2$ regularizáciou váh, kde hodnota $l_2$ regularizácie je $10^{-2}$. Prvé dve vrstvy DAE využívajú aktivačnú funkciu ReLU, pričom výstupná vrstva DAE využíva lineárnu aktivačnú funkciu.
+
+Jednotlivé vrstvy DAE sú zapuzdrené v objekte triedy \mintinline{Python}{Model}, obsiahnutej v knižnici \mintinline{Python}{Keras}. Zostrojenie DAE je realizované metódou \mintinline{Python}{compile()} triedy \mintinline{Python}{Model}. Metóda \mintinline{Python}{compile()} prijíma ako parametre spôsob úpravy váh (v našom prípade RMSPropOptimalizer \cite{Goh1995}) a typ chybovej funkcie (v našom prípade funkcia priemernej kvadratickej chyby (MSE, z angl. Mean Squared Error)). Aktivácia trénovania je realizovaná metódou \mintinline{Python}{fit()} triedy \mintinline{Python}{Model}. Trénovanie DAE pozostáva z 80 iterácii a veľkosťou dávky 128. Natrénovaný DAE je následne uložený na disk.
+
+Výstupom funkcie \mintinline{Python}{trainDAE()} je natrénovaný DAE, ktorý je možné použiť na odšumenie vstupných dát.
+
+\section{Odšumenie vstupných dát pomocou ošumujúceho autoenkódera}
+\label{predict_DAE}
+
+Odšumenie vstupných dát pomocou DAE je realizované funkciou \mintinline{Python}{predictDAE()}, ktorá prijíma ako parametre dáta ktoré budú odšumené, natrénovaný autoenkóder použitý na odšumenie vstupných dát a identifikátor potreby odšumenia dát. Ako sme uviedli v Prílohe \ref{train_DAE}, natrénovaný autoenkóder je objektom triedy \mintinline{Python}{Model}, obsiahnutej v knižnici \mintinline{Python}{Keras}. Odšumenie dát je vykonané volaním metódy \mintinline{Python}{predict()} triedy \mintinline{Python}{Model}, ktorá prijíma ako parameter vstupnú vzorku, ktorá má byť daným autoenkóderom odšumená. 
+
+Výstupom funkcie \mintinline{Python}{predictDAE()} je inštancia triedy \mintinline{Python}{Sample}, obsiahnutej v súbore \mintinline{Python}{denoisingAutoEncoder.py}, ktorej atribútmi sú:
+\begin{enumerate}
+    \item \mintinline{Python}{X} - odšumené vstupné dáta
+    \item \mintinline{Python}{y} - pôvodné identifikátory tried jednotlivých buniek
+\end{enumerate}
+
+\chapter{Implementácia bunkového klasifikátora}
+\label{implementation_ff_net}
+
+\section{Trénovanie bunkového klasifikátora}
+\label{trainFF}
+
+\section{Gatovanie pomocou bunkového klasifikátora}
+\label{gateFF}
+
 \chapter{Plán práce na riešení projektu}
 \begin{enumerate}
     \item Implementácia metódy DeepCyTOF (December)

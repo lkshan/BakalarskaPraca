@@ -50,6 +50,10 @@ F_i=\frac{P \times R}{P + R}
 \end{equation}
 kde $P$ je podiel počtu správne klasifikovaných pozitívnych hodnôt a počtu všetkých pozitívnych hodnôt predikovaných klasifikátorom a $R$ je podiel počtu správne klasifikovaných pozitívnych hodnôt a celkového počtu všetkých skutočných pozitívnych hodnôt danej kategórie \cite{sasaki2007truth}.
 
+Alternatívnou metrikou vyhodnocovania je pozorovanie vývoja hodnoty MMD počas trénovania MMD-ResNet s využitím algoritmu syntetického gradientu. Týmto spôsobom je možné lepšie pochopiť správanie vplyvu syntetického gradientu na proces trénovania MMD-ResNet. Pozorovaný vývoj hodnoty MMD je následne možné porovnať s vývojom hodnoty MMD, získaným trénovaním MMD-ResNet s využitím metódy štandardného spätného šírenia chyby.
+
+Pri pozorovaní vývoja hodnoty MMD v procese trénovania MMD-ResNet berieme do úvahy, v akom čase sú dosiahnuté jednotlivé hodnoty MMD. Na základe teoretických znalostí je možné preukázať, že paralelizácia trénovania jednotlivých vrstiev MMD-ResNet vedie k zníženiu výpočtového času potrebného na realizáciu daného trénovania \cite{Jaderberg2016, Czarnecki2017}. Vzhľadom k tomu, že jednotlivé algoritmy trénovania MMD-Resnet (algoritmus syntetického gradientu a štandardné spätné šírenie chyby) môžu mať odlišnú mieru konvergencie hodnoty MMD, tak je potrebné brať do úvahy aj počet iterácií, ktoré sú potrebné na dosiahnutie jednotlivých hodnôt MMD.
+
 \chapter{Zhodnotenie}
 
 V Kapitole \ref{SGzhrnutie} sme uviedli, že neurónové siete trénované využitím algoritmu syntetického gradientu dokážu lepšie konvergovať za predpokladu, že pozostávajú z viacerých skrytých vrstiev. Výsledky experimentov ktoré skúmali implementáciu syntetického gradientu v hlbokých neurónových sieťach nepreukázali žiaden signifikantný pokles presnosti skúmaných neurónových sieti. Na základe týchto tvrdení sa domnievame, že využitie algoritmu syntetického gradientu v procese trénovania reziduálnej siete by malo mať podobný efekt. 

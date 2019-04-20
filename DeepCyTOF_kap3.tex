@@ -35,7 +35,7 @@ Tretia neurónová sieť, hĺboká dopredná neurónová sieť, vykonáva finál
 
 Pred aplikovaním metódy DeepCyTOF na dátovú sadu, je potrebné vykonať predspracovanie hodnôt parametrov. V rámci predspracovania sú všetky dáta upravené logaritmickou transformáciou
 \begin{equation}
-    A_{i,j} = log(1+A_{i,j}),
+    A_{i,j} = log(1+|A_{i,j}|),
 \end{equation}
 kde $A_{i,j}$ predstavuje hodnotu parametra krvnej vzorky $A$. Následne je vykonaná štandardizácia všetkých parametrov krvnej vzorky $A$ \cite{Li2016, Li2017}. Štandardizácia dátovej vzorky škáluje hodnoty parametrov tak, aby sa dosiahlo $\bar{A}_i=0$ a $\sigma_i=1$, kde $\bar{A}_i$ je priemer hodnôt parametra $i$ a $\sigma_i$ je štandardná odchýlka parametra $i$ \cite{Aksoy}.
 
@@ -52,6 +52,7 @@ Nahradenie nulových hodnôt za reálne hodnoty je realizované odšumujúcim au
 DAE je trénovaný na dátovej sade buniek, bez nulových hodnôt (alebo s veľmi nízkym výskytom). Pre zvýšenie kvality predikcie, je vytvorená simulácia nestability meracieho prístroja, ktorá vo fáze trénovania, náhodne nuluje isté hodnoty vstupných dát \cite{Li2017}. Keďže skutočné hodnoty nami vynulovaných parametrov sú známe, tak pri trénovaní je jednoduchšie kontrolovať a manipulovať s chybovosťou neurónovej siete. Počas trénovania DAE sa priebežne mení pravdepodobnosť výskytu simulovaných nulových hodnôt. Po ukončení trénovania DAE, sa vykoná odšumenie nad celou dátovou sadou. V rámci odšumenia sa DAE aplikuje na celú dátovú sadu. Výsledkom odšumenia je rovnaká dátova sada s nahradenými nulovými hodnotami \cite{Li2017}.
 
 \subsection{Kalibrácia cytometrických dát pomocou MMD-ResNet}
+\label{kalibracia_dat}
 
 V cytometrických dátových sadách sa nachádzajú hodnoty z rôznych pravdepodobnostných rozdelení. Tento problém sa nazýva tiež ako diskrepancia hodnôt parametrov. Problém diskrepancie hodnôt parametrov je spôsobený dávkovým efektom opísaným v úvode kapitoly \ref{DeepCyTOF_kap3}.
 Pre dosiahnutie čo najpresnejšieho gatingu je vhodné kalibrovať jednotlivé dátové vzorky voči referenčnej vzorke. Metóda DeepCyTOF na riešenie problému diskrepancie hodnôt parametrov využíva reziduálnu sieť MMD-ResNET (z angl. Maximum Mean Discrepancy - Residual Network). MMD-ResNet je špecifický typ reziduálnej siete, ktorá je schopná na základe distribúcie hodnôt referenčnej vzorky kalibrovať distribúciu hodnôt cieľovej vzorky. Kalibráciou hodnôt je dosiahnuté zníženie hodnoty diskrepancie v rámci dátovej sady \cite{Li2017}.
@@ -74,6 +75,7 @@ kde $\mathcal{F}$ predstavuje Hilbertov priestor \cite{HilbSpace, Alvarez2012} r
 kde $\tilde{f}$ je transformácia zobrazenia na výstupe reziduálnej siete, $w$ sú parametre reziduálnej siete, $\mathcal{X} = \{x_1, x_2, .... , x_n\}$ je konečná zdrojová vzorka a $\mathcal{Y} = \{y_1, y_2, .... , y_n\}$ je konečná cieľová vzorka \cite{Li2017}. Kernelová funkcia $k(x, y)$ je súčtom troch Gaussových jadier, definovaná ako \cite{Li2017}:
 
 \begin{equation}
+\label{kernel_funct}
 k(x,y) = {\sum^3}_{i=1}exp\bigg(-\frac{{\left\Vert x-y \right\Vert}^2}{\sigma_i}\bigg)
 \end{equation}
 
@@ -94,6 +96,7 @@ Kumulované vrstvy MMD-ResNet vykonávajú váhovanie, dávkovú normalizáciu a
 
 
 \section{Klasifikácia cytometrických dát}
+\label{feed-forward-classifikator}
 
 Automatický gating je vykonávaný hlbokou doprednou neurónovou sieťou, ktorá je trénovaná na klasifikáciu buniek na základe ich parametrov. Trénovanie neurónovej siete je založené na báze učenia s učiteľom \cite{Goh1995}. Za supervíziu sú považované klasifikované bunky z  manuálne-gatovanej referenčnej vzorky. Referenčná vzorka je zvolená pred fázou trénovania neurónovej siete. 
 
