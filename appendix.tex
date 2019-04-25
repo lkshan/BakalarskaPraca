@@ -34,6 +34,7 @@ Neurónová sieť je schopná klasifikovať jednotlivé dátove vzorky s chybou 
 \end{figure}
 
 \section{Rozšírenie modulu syntetického gradientu}
+\label{experiment_SG2}
 
 Na začiatku kapitoly sme opísali experiment z \cite{Jaderberg2016}, pri ktorom bola konvolučná neurónová sieť aplikovaná na klasifikáciu dátovej sady MNIST \cite{yann1998mnist}. Táto neurónová sieť vykonávala na každej skrytej vrstve lineárnu klasifikáciu realizovanú dávkovou normalizáciou \cite{Ioffe2015} a transformáciu dát pomocou ReLU (z angl. Rectified Linear Unit) \cite{Xu2015}. 
 
@@ -179,7 +180,7 @@ V prvej fáze trénovania DAE sú načítané všetky vzorky dátovej sady (okre
 
 Ak je nie je potrebné trénovať nový DAE, tak autoenóder je načítaný z disku. V opačnom prípade je DAE zostrojený pomocou jednej vstupnej vrstvy (inštancia triedy \mintinline{Python}{Input}, obsiahnutej v knižnici \mintinline{Python}{Keras}) a troch plne-prepojených váhových vrstiev (inštancia triedy \mintinline{Python}{Dense}, obsiahnutej v knižnici \mintinline{Python}{Keras}). Všetky skryté vrstvy disponujú $l_2$ regularizáciou váh, kde hodnota $l_2$ regularizácie je $10^{-2}$. Prvé dve vrstvy DAE využívajú aktivačnú funkciu ReLU, pričom výstupná vrstva DAE využíva lineárnu aktivačnú funkciu.
 
-Jednotlivé vrstvy DAE sú zapuzdrené v objekte triedy \mintinline{Python}{Model}, obsiahnutej v knižnici \mintinline{Python}{Keras}. Zostrojenie DAE je realizované metódou \mintinline{Python}{compile()} triedy \mintinline{Python}{Model}. Metóda \mintinline{Python}{compile()} prijíma ako parametre spôsob úpravy váh (v našom prípade RMSPropOptimalizer \cite{Goh1995}) a typ chybovej funkcie (v našom prípade funkcia priemernej kvadratickej chyby (MSE, z angl. Mean Squared Error)). Aktivácia trénovania je realizovaná metódou \mintinline{Python}{fit()} triedy \mintinline{Python}{Model}. Trénovanie DAE pozostáva z 80 iterácii a veľkosťou dávky 128. Natrénovaný DAE je následne uložený na disk.
+Jednotlivé vrstvy DAE sú zapuzdrené v objekte triedy \mintinline{Python}{Model}, obsiahnutej v knižnici \mintinline{Python}{Keras}. Zostrojenie DAE je realizované metódou \mintinline{Python}{compile()} triedy \mintinline{Python}{Model}. Metóda \mintinline{Python}{compile()} prijíma ako parametre metódu úpravy váh (v našom prípade RMSPropOptimalizer \cite{Goh1995}) a typ chybovej funkcie (v našom prípade funkcia priemernej kvadratickej chyby (MSE, z angl. Mean Squared Error)). Aktivácia trénovania je realizovaná metódou \mintinline{Python}{fit()} triedy \mintinline{Python}{Model}. Trénovanie DAE pozostáva z 80 iterácii a veľkosťou dávky 128. Natrénovaný DAE je následne uložený na disk.
 
 Výstupom funkcie \mintinline{Python}{trainDAE()} je natrénovaný DAE, ktorý je možné použiť na odšumenie vstupných dát.
 
@@ -200,8 +201,28 @@ Výstupom funkcie \mintinline{Python}{predictDAE()} je inštancia triedy \mintin
 \section{Trénovanie bunkového klasifikátora}
 \label{trainFF}
 
+Trénovanie bunkového klasifikátora je realizované volaním funkcie \mintinline{Python}{trainClassifier()}, obsiahnutej v súbore \mintinline{Python}{feedforwardClassifier.py}. Funkcia ako parametre prijíma trénovaciu vzorku (v našom prípade referenčná vzorka), formát súboru v ktorom sú uložené vzorky dátovej sady, identifikátor referenčnej vzorky v dátovej sade, zoznam veľkostí skrytých vrstiev klasifikátora, typ aktivačnej funkcie skrytých vrstiev klasifikátora, hodnotu $l_2$ regularizácie váh skrytých jednotlivých vrstiev klasifikátora a cestu, kde bude novonatrénovaný klasifikátor uložený.
+
+V úvode trénovania sú z trénovacej vzorky odstránené všekty záznamy (bunky), ktoré prislúchajú triede $0$ (trida neurčitých/neznámych buniek). Odstránenie neurčitých buniek umožňuje trénovať klasifikátor len na bunkách, ktorých trieda je známa a klasifikátor je tak schopný lepšie predikovať známe triedy jednotlivých buniek. 
+
+Bunkový klasifikátor je zostrojený z jednej vstupnej vrstvy (objekt triedy \mintinline{Python}{Input}, obsiahnutý v knižnici \mintinline{Python}{Keras}) a troch skrytých plneprepojených váhových vrstvách (objekt triedy \mintinline{Python}{Dense}, obsiahnutý v knižnici \mintinline{Python}{Keras}). Veľkosť vstupnej vrstvy je rovná počtu parametrov trénovacej vzorky (v našom prípade počet markerov v referenčnej vzorke). Veľkosti skrytých vrstiev sú inicializované na základe zoznamu veľkostí skrytých vrstiev poskytnutého pri volaní funkcie \mintinline{Python}{trainClassifier()}. Jednotlivé skryté vrstvy vykonávajú $l_2$ regularizáciu váh s hodnotou $l_2$ regularizácie uvedenej v parametroch volania funkcie \mintinline{Python}{trainCLassifier()}. Aktivačná funkcia skrytých vrstiev je definovaná v parametroch pri volaní funkcie \mintinline{Python}{trainClassifier()}.
+
+Po deklarovaní skrytých vrstiev nasleduje deklarácia výstupnej vrstvy. Výstupná vrstva je objektom triedy \mintinline{Python}{Dense}, obsiahnutej v knižnici \mintinline{Python}{Keras} a jej veľkosť je rovná počtu tried, vyskytujúcich sa v trénovecej vzorke. Aktivačná funkcia výstupnej vrstvy je funkcia \textit{Softmax} \cite{Goh1995}.
+
+Deklarované vrstvy klasifikátora (počnúc vstupnou vrstvou a končiac výstupnou vrstvou) sú zapuzdrené v objekte triedy \mintinline{Python}{Model}, obsiahnutej v knižnici \mintinline{Python}{Keras}. Zostrojenie modelu klasifikátora je realizované metódou \mintinline{Python}{compile()}, obsiahnutou v triede \mintinline{Python}{Model}. Funkcia \mintinline{Python}{compile()} prijíma ako parametre metódu úpravy váh (v našom prípade RMSPropOptimizer \cite{Goh1995}) a typ chybovej funkcie (v našom prípade funkcia riedkej kategorickej krížovej entropie (SCCE, z angl. Sparse Categorical CrossEntropy)).
+
+Zostrojený model je následne trénovaný metódou \mintinline{Python}{fit()}, obsiahnutou v triede \mintinline{Python}{Model}. Trénovanie bunkového klasifikátore je realizované 80 iteráciami s veľkosťou trénovacej dávky 128. Trénovanie klasifikátora využíva dynamický krok učenia definovaný ako opisuje \ref{dyna_lr}. Pretrénovanie klasifikátora je ošetrené implementáciou funkcie predčasného zastavenia \mintinline{Python}{EarlyStopping()}, obsiahnutej v knižnici \mintinline{Python}{Keras}.
+
+Natrénovaný klasifikátor je uložený na disk. Výstupom funkcie \mintinline{Python}{trainClassifier()} je natrénovaný klasifikátor, resp. objekt triedy \mintinline{Python}{Model}.
+
 \section{Gatovanie pomocou bunkového klasifikátora}
 \label{gateFF}
+
+Gatovanie, resp. klasifikovanie jednotlivých buniek vzsupnej vzorky do diskrétnych skupín je realizované funkciou \mintinline{Python}{prediction()}, obsiahnutou v súbore \mintinline{Python}{feedforwardClassifier.py}. Funkcia \mintinline{Python}{prediction()} prijíma ako parametre vzorku dát, ktoré budú klasifikované (gatované), formát súboru vzoriek dátovej sady, identifikátor referenčnej vzorky a natrénovaný klasifikátor, ktorý bude použitý na klasifikovanie vstupnej vzorky.
+
+Ako je uvedené v Prílohe \ref{trainFF}, klasifikátor je inštanciou triedy \mintinline{Python}{Model}, obsiahnutej v knižnici \mintinline{Python}{Keras}. Klasifikovanie vzorky je realizované volaním metódy \mintinline{Python}{predict()} nad daným objektom klasifikátora. Metóda \mintinline{Python}{predict()} ako parametre prijíma vzorku dát, ktoré majú byť predikované. Výstupom metódy \mintinline{Python}{predict()} je hodnota pravdepodobností priradenia každej buniek do jednotlivých tried (napr. [0.27, 0.18, 0.04. 0.79]). V ďalšom kroku je vybraný index tej hodnoty pravdepodobnosti, ktorá je pre každú bunku najvyššia (vo vyššie uvedenom prípade ide o index 3). Všetky vybrané indexy sú následne inkrementované o 1 aby bol dodržaný pôvodný konsenzus identifikátorov bunkových tried (trieda ktorá má identifikátor 1 sa nachádza na indexe 0 a preto je potrebné inkrementovať všetky indexy o hodnotu 1). Následne všetky bunky, ktorých najvyššia pravdepodobnosť priradenia do nejakej skupiny je nižšia ako hodnota 0.4, sú priradené do skupiny s identifikátorom 0 (skupina neurčitých/neznámych buniek).
+
+Výstupom funkcie \mintinline{Python}{prediction()} je hodnota presnosti gatovania, $F1$ skôre dosiahnuté pri gatovaní daným kalsifikátorom a klasifikované triedy buniek vstupnej vzorky.
 
 \chapter{Plán práce na riešení projektu}
 \begin{enumerate}

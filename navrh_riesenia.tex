@@ -1,4 +1,5 @@
 \chapter{Návrh}  % chapter* je necislovana kapitola
+\label{navrh}
 
 Na základe poznatkov získaných z analýzy reziduálnych sieti sme zistili, že reziduálne siete sa osvedčili ako vhodný prostriedok na aproximáciu identického zobrazenia. Tieto poznatky boli overené na základe rôznych experimentov \cite{Targ2016, He2016, Wu2017}. Štandardné reziduálne siete sú trénované klasickým algoritmom spätného šírenia chyby.
 
@@ -34,6 +35,7 @@ Identitné prepojenie nebude vykonávať žiadnu dodatočnú transformáciu iden
 
 Pri zmene váh jednotlivých vrstiev je použitý dynamický krok učenia. Dynamickosť kroku učenia je realizovaná rozvrhom. Krok učenia je podobne ako v \cite{Li2017}, definovaný ako 
 \begin{equation}
+\label{dyna_lr}
     \alpha_t = \alpha_0 . \gamma^{\lfloor\frac{1+t}{T}\rfloor}
 \end{equation}
 kde $\alpha_t$ je hodnota kroku učenia v iterácii učenia $t$, $\alpha_0$ je počiatočná hodnota kroku učenia, $\gamma$ je predom definovaná konštanta a $T$ je zvolený rozvrh. Takto navrhnutý, dynamicky sa meniaci krok učenia pomáha zjemňovať konvergenciu presnosti neurónovej siete. V neskorších fázach trénovania je preto prírastok presnosti neurónovej siete nižší. Implementácia dynamického kroku učenia bráni pretrénovaniu neurónovej siete.
@@ -46,7 +48,7 @@ Smerodajnou hodnotou presnosti MMD-ResNet s využitím algoritmu syntetického g
 \end{equation}
 kde $c_i$ je počet buniek kategórie $i$, $N$ je celkový počet buniek v krvnej vzorke a $F_i$ je F1 skóre pre $i$-tu kategóriu buniek voči všetkým ostatným bunkám \cite{Li2017}. F1 skóre $F_i$ pre $i$-tu kategóriu je definované ako 
 \begin{equation}
-F_i=\frac{P \times R}{P + R}
+F_i=2\frac{P \times R}{P + R}
 \end{equation}
 kde $P$ je podiel počtu správne klasifikovaných pozitívnych hodnôt a počtu všetkých pozitívnych hodnôt predikovaných klasifikátorom a $R$ je podiel počtu správne klasifikovaných pozitívnych hodnôt a celkového počtu všetkých skutočných pozitívnych hodnôt danej kategórie \cite{sasaki2007truth}.
 
