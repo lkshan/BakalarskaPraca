@@ -70,7 +70,7 @@ Zdroj \cite{Jaderberg2016} nakoniec uviedol, že vykonal experiment pri ktorom t
 \end{center}
 \end{table}
 
-Na tento experiment sme sa zamerali predovšetkým preto, aby sme zistili aký vplyv má syntetický gradient na neurónovú sieť, ktorá vykonáva lineárnu klasifikáciu realizovanú dávkovou normalizáciou a ReLU. Skutočnosť, že implementácia syntetického gradientu na takýto typ neurónovej siete nemá signifikantne negativný vplyv na presnosť neurónovej siete je pre nás pozitívna. Pozitívna vzhľadom k tomu, že ďalšia časť práce sa bude venovanáť reziduálnym sieťam ktoré využívajú dávkovú normalizáciu a ReLU. V tomto ohľade je pre nás nevyhnutné disponovať informáciou o tom, aký efekt syntetického gradientu na takúto sieť máme očakávať.
+Na tento experiment sme sa zamerali predovšetkým preto, aby sme zistili aký vplyv má syntetický gradient na neurónovú sieť, ktorá vykonáva lineárnu klasifikáciu realizovanú dávkovou normalizáciou a ReLU. Skutočnosť, že implementácia syntetického gradientu na takýto typ neurónovej siete nemá signifikantne negativný vplyv na presnosť neurónovej siete je pre nás pozitívna. Pozitívna vzhľadom k tomu, že ďalšia časť práce sa venuje reziduálnym sieťam ktoré využívajú dávkovú normalizáciu a ReLU. V tomto ohľade je pre nás nevyhnutné disponovať informáciou o tom, aký efekt syntetického gradientu na takúto sieť máme očakávať.
 
 \chapter{Experimenty modifikácie reziduálneho bloku}
 
@@ -157,7 +157,7 @@ konštantné škálovanie   & Obr. \ref{fig:achitectures_of_identity_shortcut} b
 \multirow{2}{*}{hradlovanie v rámci prepojenia}   & \multirow{2}{*}{Obr. \ref{fig:achitectures_of_identity_shortcut} d)} & 12,86 & $b_g = 0$\\
 & & 6,91 & $b_g = -6$\\
 \hline
-$1\times1$ konvulenčné prepojenie & Obr. \ref{fig:achitectures_of_identity_shortcut} e) & 12,22 \\
+$1\times1$ konvolučné prepojenie & Obr. \ref{fig:achitectures_of_identity_shortcut} e) & 12,22 \\
 \hline
 stochastické vynechávanie prepojenia (dropout)& Obr. \ref{fig:achitectures_of_identity_shortcut} f) & zlyhanie & \\
 \hline
@@ -173,11 +173,11 @@ stochastické vynechávanie prepojenia (dropout)& Obr. \ref{fig:achitectures_of_
 \section{Trénovania odšumujúceho autoenkódera}
 \label{train_DAE}
 
-Funkcia trénovania odšumujúceho autoenkódera (DAE) \mintinline{Python}{trainDAE()} je obsiahnutá v súbore \mintinline{Python}{denoisingAutoEncoder.py}. Funkcia ako parametre prijíma referenčnú vzorku, cestu k jednotlivým vzorkám dátovej sady, identifikátor referenčnej vzorky, zoznam vzoriek ktoré je možné použiť na trénovanie, identifikátory relevantných markerov, formát súboru v ktorom sú vzorky uložené, miera zašumenia vzoriek pri trénovaní DAE, identifikátor potreby odšumenia dát, identifikátor potreby trénovania nového DAE a cesta, kde bude nový DAE uložený. 
+Funkcia trénovania odšumujúceho autoenkódera (DAE) \mintinline{Python}{trainDAE()} je obsiahnutá v súbore \mintinline{Python}{denoisingAutoEncoder.py}. Funkcia ako parametre prijíma referenčnú vzorku, cestu k jednotlivým vzorkám dátovej sady, identifikátor referenčnej vzorky, zoznam vzoriek ktoré je možné použiť na trénovanie, identifikátory relevantných markerov, formát súboru v ktorom sú vzorky uložené, miera zašumenia vzoriek pri trénovaní DAE, identifikátor potreby odšumenia dát, identifikátor potreby trénovania nového DAE a cesta, kde bude novonatrénovaný DAE uložený. 
 
-V prvej fáze trénovania DAE sú načítané všetky vzorky dátovej sady (okrem referenčnej vzorky) do pamäte a následne sú vyselektované tie záznamy, ktoré neobsahujú prázdne hodnoty. Načítané vzorky sú normalizované logaritmickou tranformáciou definovanou ako opisuje výraz \ref{log_transf}. Normalizované vzorky z dátovej sady sú následne spojené s referenčnou vzorkou za účelom rozšírenia rozmanitosť dátovej sady.  Následne je z novovytvorenej dátovej sady (združujúcej referenčnú vzorku a všetky vzorky z dátovej sady) vytvorená kópia ktorá je zašumená mierou zašumenia definovanou pri volaní funkcie \mintinline{Python}{trainDAE()}. Zašumená dátová sada predstavuje trénovaciu sadu určenú na trénovanie DAE, zatiaľ čo pôvodná dátová sada je použitá pri vypočítavaní hodnoty chyby predikcie ako cieľová vzorka (supervízia).
+V prvej fáze trénovania DAE sú načítané všetky vzorky dátovej sady (okrem referenčnej vzorky) do pamäte a následne sú vyselektované tie záznamy, ktoré neobsahujú prázdne hodnoty. Načítané vzorky sú normalizované logaritmickou tranformáciou definovanou ako opisuje výraz \ref{log_transf}. Normalizované vzorky z dátovej sady sú následne spojené s referenčnou vzorkou za účelom rozšírenia rozmanitosť dátovej sady.  Následne je z novovytvorenej dátovej sady (združujúcej referenčnú vzorku a zdrojové vzorky z dátovej sady) vytvorená kópia ktorá je zašumená mierou zašumenia definovanou pri volaní funkcie \mintinline{Python}{trainDAE()}. Zašumená dátová sada predstavuje trénovaciu sadu určenú na trénovanie DAE, zatiaľ čo pôvodná dátová sada je použitá pri vypočítavaní hodnoty chyby predikcie ako cieľová vzorka (supervízia).
 
-Ak je nie je potrebné trénovať nový DAE, tak autoenóder je načítaný z disku. V opačnom prípade je DAE zostrojený pomocou jednej vstupnej vrstvy (inštancia triedy \mintinline{Python}{Input}, obsiahnutej v knižnici \mintinline{Python}{Keras}) a troch plne-prepojených váhových vrstiev (inštancia triedy \mintinline{Python}{Dense}, obsiahnutej v knižnici \mintinline{Python}{Keras}). Všetky skryté vrstvy disponujú $l_2$ regularizáciou váh, kde hodnota $l_2$ regularizácie je $10^{-2}$. Prvé dve vrstvy DAE využívajú aktivačnú funkciu ReLU, pričom výstupná vrstva DAE využíva lineárnu aktivačnú funkciu.
+Ak nie je potrebné trénovať nový DAE, tak autoenóder je načítaný z disku. V opačnom prípade je DAE zostrojený pomocou jednej vstupnej vrstvy (inštancia triedy \mintinline{Python}{Input}, obsiahnutej v knižnici \mintinline{Python}{Keras}) a troch plne-prepojených váhových vrstiev (inštancia triedy \mintinline{Python}{Dense}, obsiahnutej v knižnici \mintinline{Python}{Keras}). Všetky skryté vrstvy disponujú $l_2$ regularizáciou váh, kde hodnota $l_2$ regularizácie je $10^{-2}$. Prvé dve vrstvy DAE využívajú aktivačnú funkciu ReLU, pričom výstupná vrstva DAE využíva lineárnu aktivačnú funkciu.
 
 Jednotlivé vrstvy DAE sú zapuzdrené v objekte triedy \mintinline{Python}{Model}, obsiahnutej v knižnici \mintinline{Python}{Keras}. Zostrojenie DAE je realizované metódou \mintinline{Python}{compile()} triedy \mintinline{Python}{Model}. Metóda \mintinline{Python}{compile()} prijíma ako parametre metódu úpravy váh (v našom prípade RMSPropOptimalizer \cite{Goh1995}) a typ chybovej funkcie (v našom prípade funkcia priemernej kvadratickej chyby (MSE, z angl. Mean Squared Error)). Aktivácia trénovania je realizovaná metódou \mintinline{Python}{fit()} triedy \mintinline{Python}{Model}. Trénovanie DAE pozostáva z 80 iterácii a veľkosťou dávky 128. Natrénovaný DAE je následne uložený na disk.
 
@@ -197,7 +197,7 @@ Výstupom funkcie \mintinline{Python}{predictDAE()} je inštancia triedy \mintin
 \section{Trénovanie bunkového klasifikátora}
 \label{trainFF}
 
-Trénovanie bunkového klasifikátora je realizované volaním funkcie \mintinline{Python}{trainClassifier()}, obsiahnutej v súbore \mintinline{Python}{feedforwardClassifier.py}. Funkcia ako parametre prijíma trénovaciu vzorku (v našom prípade referenčná vzorka), formát súboru v ktorom sú uložené vzorky dátovej sady, identifikátor referenčnej vzorky v dátovej sade, zoznam veľkostí skrytých vrstiev klasifikátora, typ aktivačnej funkcie skrytých vrstiev klasifikátora, hodnotu $l_2$ regularizácie váh skrytých jednotlivých vrstiev klasifikátora a cestu, kde bude novonatrénovaný klasifikátor uložený.
+Trénovanie bunkového klasifikátora je realizované volaním funkcie \mintinline{Python}{trainClassifier()}, obsiahnutej v súbore \mintinline{Python}{feedforwardClassifier.py}. Funkcia ako parametre prijíma trénovaciu vzorku (v našom prípade referenčná vzorka), formát súboru v ktorom sú uložené vzorky dátovej sady, identifikátor referenčnej vzorky v dátovej sade, zoznam veľkostí skrytých vrstiev klasifikátora, typ aktivačnej funkcie skrytých vrstiev klasifikátora, hodnotu $l_2$ regularizácie váh jednotlivých skrytých vrstiev klasifikátora a cestu, kde bude novonatrénovaný klasifikátor uložený.
 
 V úvode trénovania sú z trénovacej vzorky odstránené všekty záznamy (bunky), ktoré prislúchajú triede $0$ (trida neurčitých/neznámych buniek). Odstránenie neurčitých buniek umožňuje trénovať klasifikátor len na bunkách, ktorých trieda je známa a klasifikátor je tak schopný lepšie predikovať známe triedy jednotlivých buniek. 
 
@@ -214,11 +214,11 @@ Natrénovaný klasifikátor je uložený na disk. Výstupom funkcie \mintinline{
 \section{Gatovanie pomocou bunkového klasifikátora}
 \label{gateFF}
 
-Gatovanie, resp. klasifikovanie jednotlivých buniek vzsupnej vzorky do diskrétnych skupín je realizované funkciou \mintinline{Python}{prediction()}, obsiahnutou v súbore \mintinline{Python}{feedforwardClassifier.py}. Funkcia \mintinline{Python}{prediction()} prijíma ako parametre vzorku dát, ktoré budú klasifikované (gatované), formát súboru vzoriek dátovej sady, identifikátor referenčnej vzorky a natrénovaný klasifikátor, ktorý bude použitý na klasifikovanie vstupnej vzorky.
+Gatovanie, resp. klasifikovanie jednotlivých buniek vsupnej vzorky do diskrétnych skupín je realizované funkciou \mintinline{Python}{prediction()}, obsiahnutou v súbore \mintinline{Python}{feedforwardClassifier.py}. Funkcia \mintinline{Python}{prediction()} prijíma ako parametre vzorku dát, ktoré budú klasifikované (gatované), formát súboru vzorky v dátovej sade, identifikátor referenčnej vzorky a natrénovaný klasifikátor, ktorý bude použitý na klasifikovanie vstupnej vzorky.
 
-Ako je uvedené v Prílohe \ref{trainFF}, klasifikátor je inštanciou triedy \mintinline{Python}{Model}, obsiahnutej v knižnici \mintinline{Python}{Keras}. Klasifikovanie vzorky je realizované volaním metódy \mintinline{Python}{predict()} nad daným objektom klasifikátora. Metóda \mintinline{Python}{predict()} ako parametre prijíma vzorku dát, ktoré majú byť predikované. Výstupom metódy \mintinline{Python}{predict()} je hodnota pravdepodobností priradenia každej buniek do jednotlivých tried (napr. [0.27, 0.18, 0.04. 0.79]). V ďalšom kroku je vybraný index tej hodnoty pravdepodobnosti, ktorá je pre každú bunku najvyššia (vo vyššie uvedenom prípade ide o index 3). Všetky vybrané indexy sú následne inkrementované o 1 aby bol dodržaný pôvodný konsenzus identifikátorov bunkových tried (trieda ktorá má identifikátor 1 sa nachádza na indexe 0 a preto je potrebné inkrementovať všetky indexy o hodnotu 1). Následne všetky bunky, ktorých najvyššia pravdepodobnosť priradenia do nejakej skupiny je nižšia ako hodnota 0.4, sú priradené do skupiny s identifikátorom 0 (skupina neurčitých/neznámych buniek).
+Ako je uvedené v Prílohe \ref{trainFF}, klasifikátor je inštanciou triedy \mintinline{Python}{Model}, obsiahnutej v knižnici \mintinline{Python}{Keras}. Klasifikovanie vzorky je realizované volaním metódy \mintinline{Python}{predict()} nad daným objektom klasifikátora. Metóda \mintinline{Python}{predict()} ako parameter prijíma vzorku dát, ktoré majú byť predikované príslušným modelom. Výstupom metódy \mintinline{Python}{predict()} je hodnota pravdepodobností priradenia každej buniek do jednotlivých tried (napr. [0.27, 0.18, 0.04. 0.79]). V ďalšom kroku je vybraný index tej hodnoty pravdepodobnosti, ktorá je pre každú bunku najvyššia (vo vyššie uvedenom prípade ide o index 3). Všetky vybrané indexy sú následne inkrementované o 1 aby bol dodržaný pôvodný konsenzus identifikátorov bunkových tried (trieda ktorá má identifikátor 1 sa nachádza na indexe 0 a preto je potrebné inkrementovať všetky indexy o hodnotu 1). Následne všetky bunky, ktorých najvyššia pravdepodobnosť priradenia do nejakej skupiny je nižšia ako hodnota 0.4, sú priradené do skupiny s identifikátorom 0 (skupina neurčitých/neznámych buniek).
 
-Výstupom funkcie \mintinline{Python}{prediction()} je hodnota presnosti gatovania, $F1$ skôre dosiahnuté pri gatovaní daným kalsifikátorom a klasifikované triedy buniek vstupnej vzorky.
+Výstupom funkcie \mintinline{Python}{prediction()} je hodnota presnosti gatovania, \textit{F1 skóre} dosiahnuté pri gatovaní daným klasifikátorom a klasifikované triedy buniek vstupnej vzorky.
 
 \chapter{Používateľská príručka}
 
@@ -263,11 +263,6 @@ pip install -U scikit-learn
 pip install fcsparser
 \end{Verbatim}
 
-\textbf{Random}
-\begin{Verbatim}[breaklines=true, breakanywhere=true]
-pip install random2
-\end{Verbatim}
-
 \textbf{Mathplotlib}
 \begin{Verbatim}[breaklines=true, breakanywhere=true]
 pip install -U matplotlib
@@ -283,7 +278,9 @@ pip install tqdm
 pip install tensorflow
 \end{Verbatim}
 
-Po nainštalovaní všetkých knižníc je možné prejsť k samotnému spusteniu programu. Z priloženého kompaktného disku skopírujeme do počítača adresár \mintinline{Python}{BP_Hanincik}. V konzole sa pomocou príkazu \mintinline{Python}{cd} presunieme do novovytvorenej kópie adresára \mintinline{Python}{BP_Hanincik}. Následne sa presunieme do podadresára \mintinline{Python}{src} (znovu používame príkaz \mintinline{Python}{cd}). V adresári \mintinline{Python}{src} sa nachádza spustiteľný program \mintinline{Python}{DeepCyTOF.py}, napísaný v programovacom jazyku \mintinline{Python}{Python}. Program \mintinline{Python}{DeepCyTOF.py} spustíme príkazom 
+\begin{sloppypar}
+Po nainštalovaní všetkých vyššieuvedených knižníc je možné prejsť k samotnému spusteniu programu. Z priloženého kompaktného disku skopírujeme do počítača adresár \mintinline{Python}{BP_Hanincik}. V konzole sa pomocou príkazu \mintinline{Python}{cd} presunieme do novovytvorenej kópie adresára \mintinline{Python}{BP_Hanincik}. Následne sa presunieme do podadresára \mintinline{Python}{src} (znovu používame príkaz \mintinline{Python}{cd}). V adresári \mintinline{Python}{src} sa nachádza spustiteľný program \mintinline{Python}{DeepCyTOF.py}, napísaný v programovacom jazyku \mintinline{Python}{Python}. Program \mintinline{Python}{DeepCyTOF.py} spustíme príkazom 
+\end{sloppypar}
 
 \begin{Verbatim}[breaklines=true, breakanywhere=true]
 python DeepCyTOF.py
@@ -294,8 +291,8 @@ Pri spustení je potrebné skontrolovať používateľské práva k súboru \min
 \begin{itemize}
     \item zdrojové vzorky kalibrované pomocou MMD-ResNet využívajúcej algoritmus syntetického gradientu (vo formáte \mintinline{Python}{csv})
     \item predikované triedy jednotlivých buniek zdrojových vzoriek (vo formáte \mintinline{Python}{csv})
-    \item vizualizácia priebehu vývoja hodnoty MMD v čase trénovania MMD-ResNet (vo formáte \mintinline{Python}{png})
-    \item vizualizácia priebehu vývoja hodnoty MMD v jednotlivých iteráciach trénovania MMD-ResNet (vo formáte \mintinline{Python}{png})
+    \item vizualizácia vývoja hodnoty MMD v čase trénovania MMD-ResNet (vo formáte \mintinline{Python}{png})
+    \item vizualizácia vývoja hodnoty MMD v jednotlivých iteráciach trénovania MMD-ResNet (vo formáte \mintinline{Python}{png})
     \item vizualizácia vývoja \textit{F1 skóre} v priebehu trénovania MMD-ResNet (vo formáte \mintinline{Python}{png})
 \end{itemize}
 
@@ -309,8 +306,13 @@ Každý z vytvorených súborov sa nachádza v samostatnom adresári s názvom k
     \item Vyhodnocovanie experimentov (Apríl)
 \end{enumerate}
 
-Plnenie stanoveného plánu práce bolo vo veľkej miere dodržané. Veľké zadosťučinenie pri plnení plánu práce mala aj účasť na študentskej výskumnej konferencii \textit{IIT.SRC 2019}. Vzhľadom na skoré termíny odovzdania vedeckých príspevkov na danú konferenciu, bolo potrebné urýchliť prvú a druhú fázu implementácie (implementáciu a analýzu metódy DeepCyTOF a implementáciu syntetického gradientu v reziduálnej sieti MMD-ResNet). Prvotné výsledky implementácie boli nadobudnuté už pri prvom odovzdaní predbežnej verzie príspevku na študentskú konferenciu \textit{IIT.SRC 2019} (24.2.2019). 
+Plnenie stanoveného plánu práce bolo vo veľkej miere dodržané. Veľké zadosťučinenie pri plnení plánu práce mala aj účasť na študentskej výskumnej konferencii \textit{IIT.SRC 2019}. Vzhľadom na skoré termíny odovzdania vedeckých príspevkov na danú konferenciu, bolo potrebné urýchliť prvú a druhú fázu implementácie (implementáciu a analýzu metódy DeepCyTOF a implementáciu syntetického gradientu v reziduálnej sieti MMD-ResNet). Prvotné výsledky implementácie boli nadobudnuté už pri prvom odovzdaní predbežnej verzie príspevku na študentskú konferenciu \textit{IIT.SRC 2019} (24.2.2019). Finálnu podobu príspevku do študentskej výskumnej konferencie \textit{IIT.SRC 2019} je možné vidieť v Prílohe \ref{IIT_SRC}.
 
-Následne sme postupovali podľa plánu a všetok čas sme investovali do zlepšovania implementácie a ladenia hyperparametrov. Časový sklz nastal pri rozširovaní metódy DeepCyTOF o dodatočnú funkcionalitu umožňujúcu klasifikovať dátovú sadu poskytnutú Slovenskou Akadémiou Vied.
+Následne sme postupovali podľa plánu a všetok čas sme investovali do zlepšovania implementácie MMD-ResNet a ladenia hyperparametrov. Časový sklz nastal pri rozširovaní metódy DeepCyTOF o dodatočnú funkcionalitu umožňujúcu klasifikovať dátovú sadu poskytnutú Slovenskou Akadémiou Vied.
 
 Okrem študentskej konferencie \textit{IIT.SRC 2019} sme našu prácu prezentovali ešte trikrát a to na rôznych seminároch. Výsledná práca zahŕňa splnenie všetkých stanovených požiadaviek v požadovanom rozsahu.
+
+\includepdf[scale=1, pages=1, pagecommand={\section{Príspevok do študentskej výskomnej konferencie IIT.SRC 2019}\label{IIT_SRC}}]{IIT_SRC.pdf}
+\includepdf[pages=2]{IIT_SRC.pdf}
+\includepdf[pages=3]{IIT_SRC.pdf}
+\includepdf[pages=4]{IIT_SRC.pdf}
