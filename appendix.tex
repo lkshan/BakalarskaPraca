@@ -168,10 +168,9 @@ stochastické vynechávanie prepojenia (dropout)& Obr. \ref{fig:achitectures_of_
 
 \end{table}
 
-\chapter{Implementácia odšumujúceho autoenkódera}
-\label{implementation_DAE}
+\chapter{Technická dokumentácia}
 
-\section{Trénovanie odšumujúceho autoenkódera}
+\section{Trénovania odšumujúceho autoenkódera}
 \label{train_DAE}
 
 Funkcia trénovania odšumujúceho autoenkódera (DAE) \mintinline{Python}{trainDAE()} je obsiahnutá v súbore \mintinline{Python}{denoisingAutoEncoder.py}. Funkcia ako parametre prijíma referenčnú vzorku, cestu k jednotlivým vzorkám dátovej sady, identifikátor referenčnej vzorky, zoznam vzoriek ktoré je možné použiť na trénovanie, identifikátory relevantných markerov, formát súboru v ktorom sú vzorky uložené, miera zašumenia vzoriek pri trénovaní DAE, identifikátor potreby odšumenia dát, identifikátor potreby trénovania nového DAE a cesta, kde bude nový DAE uložený. 
@@ -194,9 +193,6 @@ Výstupom funkcie \mintinline{Python}{predictDAE()} je inštancia triedy \mintin
     \item \mintinline{Python}{X} - odšumené vstupné dáta
     \item \mintinline{Python}{y} - pôvodné identifikátory tried jednotlivých buniek
 \end{enumerate}
-
-\chapter{Implementácia bunkového klasifikátora}
-\label{implementation_ff_net}
 
 \section{Trénovanie bunkového klasifikátora}
 \label{trainFF}
@@ -224,10 +220,97 @@ Ako je uvedené v Prílohe \ref{trainFF}, klasifikátor je inštanciou triedy \m
 
 Výstupom funkcie \mintinline{Python}{prediction()} je hodnota presnosti gatovania, $F1$ skôre dosiahnuté pri gatovaní daným kalsifikátorom a klasifikované triedy buniek vstupnej vzorky.
 
+\chapter{Používateľská príručka}
+
+Táto kapitola opisuje sekvenciu krokov, ktoré je potrebné vykonať za účelom korektného spustenia programu. Používateľská príručka sa orientuje na spusteniu programu na platforme \textit{Mac OS}.
+
+Prvý krok predstavuje nainštalovanie spúšťacej jednoty programovacieho jazyka \textit{Python 3}. Na nainštalovanie spúšťacej jednotky je najprv potrebné nainštalovať správcu balíkov pre systém \textit{Mac OS}, \textit{Homebrew}. Inštalácia správcu balíkov \textit{Homebrew} je realizovaná nasledujúcim príkazom:
+
+\begin{Verbatim}[breaklines=true, breakanywhere=true]
+ruby -e "\$(curl -fsSLhttps://raw.githubusercontent.com/Homebrew/install/master/install)"
+\end{Verbatim}
+
+Pomocou správcu balíkov \textit{Homebrew} je možné nainštalovať spúšťaciu jednotku programovacieho jazyka \textit{Python 3}, ako
+
+\begin{Verbatim}[breaklines=true, breakanywhere=true]
+brew install python
+\end{Verbatim}
+
+Správca balíkov \textit{Homebrew} pri inštalácii spúšťacej jednotky programovacieho jazyka \textit{Python} nainštaluje aj správcu balíkov jazyka \textit{Python}, \mintinline{Python}{pip}. Správca balíkov \mintinline{Python}{pip} umožňuje sťahovať všetky potrebné knižnice a rozšírenia programovacieho jazyka \textit{Python}. Nasledujúci zoznam opisuje všetky knižnice ktoré je potrebné nainštalovať pred spustením programu a príkazy, ktorými je možné dané knižnice nainštalovať.
+
+\textbf{Keras}
+\begin{Verbatim}[breaklines=true, breakanywhere=true]
+pip install keras
+\end{Verbatim}
+
+\textbf{Numpy}
+\begin{Verbatim}[breaklines=true, breakanywhere=true]
+pip install numpy
+\end{Verbatim}
+
+\textbf{Pandas}
+\begin{Verbatim}[breaklines=true, breakanywhere=true]
+pip install pandas
+\end{Verbatim}
+
+\textbf{Scikit Learn}
+\begin{Verbatim}[breaklines=true, breakanywhere=true]
+pip install -U scikit-learn
+\end{Verbatim}
+
+\textbf{FCS parser}
+\begin{Verbatim}[breaklines=true, breakanywhere=true]
+pip install fcsparser
+\end{Verbatim}
+
+\textbf{Random}
+\begin{Verbatim}[breaklines=true, breakanywhere=true]
+pip install random2
+\end{Verbatim}
+
+\textbf{Mathplotlib}
+\begin{Verbatim}[breaklines=true, breakanywhere=true]
+pip install -U matplotlib
+\end{Verbatim}
+
+\textbf{Tqdm}
+\begin{Verbatim}[breaklines=true, breakanywhere=true]
+pip install tqdm
+\end{Verbatim}
+
+\textbf{TensorFlow}
+\begin{Verbatim}[breaklines=true, breakanywhere=true]
+pip install tensorflow
+\end{Verbatim}
+
+Po nainštalovaní všetkých knižníc je možné prejsť k samotnému spusteniu programu. Z priloženého kompaktného disku skopírujeme do počítača adresár \mintinline{Python}{BP_Hanincik}. V konzole sa pomocou príkazu \mintinline{Python}{cd} presunieme do novovytvorenej kópie adresára \mintinline{Python}{BP_Hanincik}. Následne sa presunieme do podadresára \mintinline{Python}{src} (znovu používame príkaz \mintinline{Python}{cd}). V adresári \mintinline{Python}{src} sa nachádza spustiteľný program \mintinline{Python}{DeepCyTOF.py}, napísaný v programovacom jazyku \mintinline{Python}{Python}. Program \mintinline{Python}{DeepCyTOF.py} spustíme príkazom 
+
+\begin{Verbatim}[breaklines=true, breakanywhere=true]
+python DeepCyTOF.py
+\end{Verbatim}
+
+Pri spustení je potrebné skontrolovať používateľské práva k súboru \mintinline{Python}{DeepCyTOF.py}. Výsledok programu je možné nájsť v adresári \mintinline{Python}{results}, ktorý obsahuje:
+
+\begin{itemize}
+    \item zdrojové vzorky kalibrované pomocou MMD-ResNet využívajúcej algoritmus syntetického gradientu (vo formáte \mintinline{Python}{csv})
+    \item predikované triedy jednotlivých buniek zdrojových vzoriek (vo formáte \mintinline{Python}{csv})
+    \item vizualizácia priebehu vývoja hodnoty MMD v čase trénovania MMD-ResNet (vo formáte \mintinline{Python}{png})
+    \item vizualizácia priebehu vývoja hodnoty MMD v jednotlivých iteráciach trénovania MMD-ResNet (vo formáte \mintinline{Python}{png})
+    \item vizualizácia vývoja \textit{F1 skóre} v priebehu trénovania MMD-ResNet (vo formáte \mintinline{Python}{png})
+\end{itemize}
+
+Každý z vytvorených súborov sa nachádza v samostatnom adresári s názvom korešpondujúcim názvu prislúchajúcej vzorky.
+
 \chapter{Plán práce na riešení projektu}
 \begin{enumerate}
-    \item Implementácia metódy DeepCyTOF (December)
+    \item Implementácia a analýza metódy DeepCyTOF (December)
     \item Implementácia syntetického gradientu v reziduálnej sieti MMD-ResNet (Január-Február)
     \item Experimentovanie a pozorovanie vplyvu syntetického gradientu na presnosť predikcií metódy DeepCyTOF (Marec)
     \item Vyhodnocovanie experimentov (Apríl)
 \end{enumerate}
+
+Plnenie stanoveného plánu práce bolo vo veľkej miere dodržané. Veľké zadosťučinenie pri plnení plánu práce mala aj účasť na študentskej výskumnej konferencii \textit{IIT.SRC 2019}. Vzhľadom na skoré termíny odovzdania vedeckých príspevkov na danú konferenciu, bolo potrebné urýchliť prvú a druhú fázu implementácie (implementáciu a analýzu metódy DeepCyTOF a implementáciu syntetického gradientu v reziduálnej sieti MMD-ResNet). Prvotné výsledky implementácie boli nadobudnuté už pri prvom odovzdaní predbežnej verzie príspevku na študentskú konferenciu \textit{IIT.SRC 2019} (24.2.2019). 
+
+Následne sme postupovali podľa plánu a všetok čas sme investovali do zlepšovania implementácie a ladenia hyperparametrov. Časový sklz nastal pri rozširovaní metódy DeepCyTOF o dodatočnú funkcionalitu umožňujúcu klasifikovať dátovú sadu poskytnutú Slovenskou Akadémiou Vied.
+
+Okrem študentskej konferencie \textit{IIT.SRC 2019} sme našu prácu prezentovali ešte trikrát a to na rôznych seminároch. Výsledná práca zahŕňa splnenie všetkých stanovených požiadaviek v požadovanom rozsahu.

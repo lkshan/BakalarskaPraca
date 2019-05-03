@@ -15,12 +15,11 @@ Implementácia je realizovaná v programovacom jazyku \textit{Python 3} s využi
 
 Zdrojový kód programu je implementovaný vo forme python skriptu. Výstupom skriptu sú dátové súbory, ktoré obsahujú:
 \begin{enumerate}
-    \item Kalibrované dáta pomocou MMD-ResNet s využitím algoritmu syntetického gradientu - vo formáte \textit{csv}
-    \item Predikované triedy jednotlivých buniek - vo formáte \textit{csv}
-    \item Vizualizácia priebehu vývoja hodnoty MMD v čase - vo formáte \textit{png}
-    \item Vizualizácia priebehu vývoja hodnoty MMD v iteráciach - vo formáte \textit{png}
-    \item Vizualizácia priebehu vývoja hodnoty \textit{F1 skóre} v čase - vo formáte \textit{png}
-    \item Vizualizácia priebehu vývoja hodnoty \textit{F1 skóre} v iteráciach - vo formáte \textit{png}
+    \item zdrojové vzorky kalibrované pomocou MMD-ResNet využívajúcej algoritmus syntetického gradientu (vo formáte \mintinline{Python}{csv})
+    \item predikované triedy jednotlivých buniek zdrojových vzoriek (vo formáte \mintinline{Python}{csv})
+    \item vizualizácia priebehu vývoja hodnoty MMD v čase trénovania MMD-ResNet (vo formáte \mintinline{Python}{png})
+    \item vizualizácia priebehu vývoja hodnoty MMD v jednotlivých iteráciách trénovania MMD-ResNet (vo formáte \mintinline{Python}{png})
+    \item vizualizácia vývoja \textit{F1 skóre} v priebehu trénovania MMD-ResNet (vo formáte \mintinline{Python}{png})
 \end{enumerate}
 
 Kód programu bol vyvíjaný vo vývojovom prostredí \textit{Spyder IDE} určenom na tvorbu python skriptov. Testovanie implementácie bolo realizované prostredníctvom webovej služby \textit{Google Colaboratory} (dostupnej na adrese \url{https://colab.research.google.com/}). Webovú službu \textit{Google Colaboratory} sme využili z dôvodu bezplatného prístupu k supervýkonným grafickým akcelerátorom \textit{NVIDIA\textsuperscript{\textregistered} Tesla}, ktoré umožnili rýchlejšie a efektívnejšie vykonávanie zložitých matematických operácií (viac v Kap. \ref{vysledky}). 
@@ -267,7 +266,7 @@ Pri implementácii MMD-ResNet využívajúcej algoritmus syntetického gradientu
 
 Pôvodný algoritmus DeepCyTOF neimplementoval funkcionalitu generovania výsledku automatické gatovania do súboru. My sme identifikovali tento problém ako kritický, keďže pôvodná implementácia neumožňuje archivovať výsledky automatického gatovania. Daný problém sme riešili implementáciou funkcie \mintinline{Python}{generateOutput()}, obisahnutej v súbore \mintinline{Python}{DataHandler.py}. Funkcia \mintinline{Python}{generateOutput()} prijíma ako parameter inicializovaný objekt triedy \mintinline{Python}{ModelSG}, výsledok gatovania kalibrovanej vzorky pomocou daného modelu a identifikátor zdrojovej vzorky. Výstupom funkcie sú:
 \begin{itemize}
-    \item zdrojová vzorka kalibrovaná pomocou MMD-ResNet s využitím algoritmu syntetického gradientu
+    \item zdrojové vzorky kalibrovaná pomocou MMD-ResNet s využitím algoritmu syntetického gradientu
     \item výsledok automatického gatovania (predikované triedy jednotlivých buniek zdrojovej vzorky)
     \item vyobrazenie vývoja hodnoty MMD a \textit{F1 skóre} v priebehu trénovania MMD-ResNet
 \end{itemize}

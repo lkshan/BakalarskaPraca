@@ -110,6 +110,7 @@ Toto tvrdenie sme potvrdili experimentom, pri ktorom sme pozorovali vývoj hodno
 Z Obr. \ref{vysledok5} je možné vidieť, že MMD-ResNet využívajúca algoritmus syntetického gradientu je vo viacerých iteráciách trénovania schopná dosiahnuť rovnakú hodnotu MMD ako MMD-ResNet využívajúca algoritmus spätného šírenia chyby. Ak uvažujeme optimálnu hodnotu MMD rovnú $2,415$, tak MMD-ResNet využívajúca algoritmus spätného šírenia chyby je schopná dosiahnuť túto hodnotu po 150 iteráciach, zatiaľ čo MMD-ResNet využívajúca algoritmus syntetického gradientu vyžaduje až 200 iterácií na dosiahnutie danej hodnoty.
 
 \section{Vývoj hodnoty MMD v závislosti od času trénovania}
+\label{vyvoj_MMD_v_case}
 
 Experiment uvedený v kapitole \ref{prve_vysledky} preukázal zníženie času potrebného na trénovanie MMD-ResNet v prípade využitia algoritmu syntetického gradientu. Nasledujúce pozorovanie porovnáva vývoj hodnoty MMD v čase trénovania MMD-ResNet využívajúcej algoritmus syntetického gradientu a MMD-ResNet využívajúcej algoritmus spätného šírenia chyby. V danom pozorovaní mali obidva modely rovnakú konfiguráciu (opísanú v úvode Kap. \ref{vysledky}), s výnimkou trénovacieho algoritmu a hodnoty rozvrhu dynamicky sa meniaceho kroku učenia (prevzaté z experimentu opísaného v Kap. \ref{vyvoj_MMD_v_iteraciach}). Výsledok pozorovania opisuje vývoj hodnoty MMD v čase trénovania modelov MMD-ResNet pri 300 iteráciach trénovania (viď Obr. \ref{vysledok6}).
 
