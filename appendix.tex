@@ -325,3 +325,30 @@ Okrem študentskej konferencie \textit{IIT.SRC 2019} sme našu prácu prezentova
 \includepdf[pages=2]{IIT_SRC.pdf}
 \includepdf[pages=3]{IIT_SRC.pdf}
 \includepdf[pages=4]{IIT_SRC.pdf}
+
+\chapter{Obsah elektronického média}
+
+\begin{itemize}
+    \item \mintinline{Python}{/BP_Hanincik/} - adresár obsahujúci všetky komponenty implementácie metódy DeepCyTOF
+    \item \mintinline{Python}{/BP_Hanincik/Data/} - adresár obsahujúci cytometrickú dátovu sadu
+    \item \mintinline{Python}{/BP_Hanincik/Data/MultiCenter_16sample/} - adresár obsahujúci jednotlivé vzorky cytometrickej dátovej sady vo formáte \mintinline{Python}{csv}
+    \begin{itemize}
+        \item súbory s prefixom \textit{sample} obsahujú hodnoty jednotlivých markerov buniek danej vzorky
+        \item súbory s prefixom \textit{labels} obsahujú identifikátory tried jednotlivých buniek danej vzorky
+    \end{itemize}
+    \item \mintinline{Python}{/BP_Hanincik/savemodels/MultiCenter_16sample/} - adresár obsahujúci vopred natrénované modely DAE a bunkových klasifikátorov
+    \item \mintinline{Python}{/BP_Hanincik/src/} - adresár obsahujúci zdrojové kódy metódy DeepCyTOF
+    \item \mintinline{Python}{/BP_Hanincik/src/DeepCyTOF.py} - súbor obsahujúci hlavný python skript, zahŕňajúci hlavnú funkcionalitu automatického gatovania
+    \item \mintinline{Python}{/BP_Hanincik/src/Util/} - adresár obsahujúci jednotlivé komponenty metódy DeepCyTOF
+    \item \mintinline{Python}{/BP_Hanincik/src/Util/Monitoring.py} - súbor obsahujúci funkcie na monitorovanie procesu trénovania modelov DAE, bunkového klasifikátora a pôvodnej imeplementácie MMD-ResNet
+    \item \mintinline{Python}{/BP_Hanincik/src/Util/MMDNet.py} - pôvodná implementácia MMD-ResNet
+    \item \mintinline{Python}{/BP_Hanincik/src/Util/MMDNet_SG.py} - implementácia MMD-ResNet s implementovanou metódu syntetického gradientu
+    \item \mintinline{Python}{/BP_Hanincik/src/Util/FileIO.py} - súbor obsahujúci funkcie prístupnosti k operačnému systému
+    \item \mintinline{Python}{/BP_Hanincik/src/Util/feedforwardClassifier.py} - implementácia bunkového klasifikátora
+    \item \mintinline{Python}{/BP_Hanincik/src/Util/denoisingAutoEncoder.py} - implementácia odšumujúceho autoenkódera
+    \item \mintinline{Python}{/BP_Hanincik/src/Util/DataHandler.py} - súbor obsahujúci funkcie na úpravu vzoriek dátovej sady a správu údajov
+    \item \mintinline{Python}{/BP_Hanincik/src/Util/CostFunctions.py} - súbor obsahujúci implementáciu chybovej funkcie MMD 
+    \item \mintinline{Python}{/BP_Hanincik/src/Util/__pycache__/} - adresár obsahujúci dočasné súbory vyrovnávajúcej pamäte jazyka \textit{python}
+    \item \mintinline{Python}{/BP_Hanincik/src/results/} - adresár obsahujúci výsledky automatického gatovania vzoriek dátovej sady metódou DeepCyTOF
+    \item \mintinline{Python}{/BP_Hanincik.pdf} - písomná časť bakalárskej práce
+\end{itemize}
