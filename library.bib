@@ -29,19 +29,17 @@ url = {http://arxiv.org/abs/1703.00522},
 year = {2017}
 }
 @article{Ioffe2015,
-abstract = {The reaction of 1-(2-pyridylazo)-2-acenaphthequinol (PAAL) with cobalt acetate in CHCl3gave the complex of Co(PAAL-H)2(1), and (PAAL + H)2[CoCl4]{\textperiodcentered}2H2O (2) was isolated in the same system with ultraviolet light irradiation. Structures of both compounds were determined by X-Ray diffraction. The PAAL ligand was deprotonated in 1, but it further protonated on N position at pyridine group in 2 and form cations. The spectra of these two compounds were also studied, as well as the fluorescence properties. Also, the redox property of 1 was preliminary investigated by cyclic voltammogram.},
+author    = {Sergey Ioffe and Christian Szegedy},
+title     = {Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift},
+journal   = {CoRR},
+volume    = {abs/1502.03167},
+year      = {2015},
+url       = {http://arxiv.org/abs/1502.03167},
 archivePrefix = {arXiv},
-arxivId = {1502.03167},
-author = {Ioffe, Sergey and Szegedy, Christian},
-doi = {10.1016/j.molstruc.2016.12.061},
-eprint = {1502.03167},
-file = {:Users/lukashanincik/Documents/School/BP/1502.03167.pdf:pdf},
-isbn = {9780874216561},
-issn = {00222860},
-pmid = {15003161},
-title = {{Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift}},
-url = {http://arxiv.org/abs/1502.03167},
-year = {2015}
+eprint    = {1502.03167},
+timestamp = {Mon, 13 Aug 2018 16:47:06 +0200},
+biburl    = {https://dblp.org/rec/bib/journals/corr/IoffeS15},
+bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 @article{Jaderberg2016,
 abstract = {Training directed neural networks typically requires forward-propagating data through a computation graph, followed by backpropagating error signal, to produce weight updates. All layers, or more generally, modules, of the network are therefore locked, in the sense that they must wait for the remainder of the network to execute forwards and propagate error backwards before they can be updated. In this work we break this constraint by decoupling modules by introducing a model of the future computation of the network graph. These models predict what the result of the modelled subgraph will produce using only local information. In particular we focus on modelling error gradients: by using the modelled synthetic gradient in place of true backpropagated error gradients we decouple subgraphs, and can update them independently and asynchronously i.e. we realise decoupled neural interfaces. We show results for feed-forward models, where every layer is trained asynchronously, recurrent neural networks (RNNs) where predicting one's future gradient extends the time over which the RNN can effectively model, and also a hierarchical RNN system with ticking at different timescales. Finally, we demonstrate that in addition to predicting gradients, the same framework can be used to predict inputs, resulting in models which are decoupled in both the forward and backwards pass -- amounting to independent networks which co-learn such that they can be composed into a single functioning corporation.},
@@ -80,25 +78,28 @@ year = {2017}
   year={1998}
 }
 @article{Xu2015,
-abstract = {In this paper we investigate the performance of different types of rectified activation functions in convolutional neural network: standard rectified linear unit (ReLU), leaky rectified linear unit (Leaky ReLU), parametric rectified linear unit (PReLU) and a new randomized leaky rectified linear units (RReLU). We evaluate these activation function on standard image classification task. Our experiments suggest that incorporating a non-zero slope for negative part in rectified activation units could consistently improve the results. Thus our findings are negative on the common belief that sparsity is the key of good performance in ReLU. Moreover, on small scale dataset, using deterministic negative slope or learning it are both prone to overfitting. They are not as effective as using their randomized counterpart. By using RReLU, we achieved 75.68$\backslash${\%} accuracy on CIFAR-100 test set without multiple test or ensemble.},
-archivePrefix = {arXiv},
-arxivId = {1505.00853},
-author = {Xu, Bing and Wang, Naiyan and Chen, Tianqi and Li, Mu},
-doi = {10.1186/1757-1146-1-S1-O22},
-eprint = {1505.00853},
-file = {:Users/lukashanincik/Documents/School/BP/Sources/ReLU.pdf:pdf},
-isbn = {0966-6362},
-issn = {1757-1146},
-mendeley-groups = {NN acceleration and improvement},
-title = {{Empirical Evaluation of Rectified Activations in Convolutional Network}},
-url = {http://arxiv.org/abs/1505.00853},
-year = {2015}
+author    = {Bing Xu and
+               Naiyan Wang and
+               Tianqi Chen and
+               Mu Li},
+  title     = {Empirical Evaluation of Rectified Activations in Convolutional Network},
+  journal   = {CoRR},
+  volume    = {abs/1505.00853},
+  year      = {2015},
+  url       = {http://arxiv.org/abs/1505.00853},
+  archivePrefix = {arXiv},
+  eprint    = {1505.00853},
+  timestamp = {Mon, 13 Aug 2018 16:48:04 +0200},
+  biburl    = {https://dblp.org/rec/bib/journals/corr/XuWCL15},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+
 }
 @article{Krizhevsky09learningmultiple,
-    author = {Alex Krizhevsky},
-    title = {Learning multiple layers of features from tiny images},
-    institution = {},
-    year = {2009}
+    title={Learning multiple layers of features from tiny images},
+  author={Krizhevsky, A. and Hinton, G.},
+  journal={Master's thesis, Department of Computer Science, University of Toronto},
+  year={2009},
+  publisher={Citeseer}
 }
 @article{Targ2016,
 abstract = {Residual networks (ResNets) have recently achieved state-of-the-art on challenging computer vision tasks. We introduce Resnet in Resnet (RiR): a deep dual-stream architecture that generalizes ResNets and standard CNNs and is easily implemented with no computational overhead. RiR consistently improves performance over ResNets, outperforms architectures with similar amounts of augmentation on CIFAR-10, and establishes a new state-of-the-art on CIFAR-100.},
@@ -175,12 +176,19 @@ year = {2016}
   year={2016}
 }
 @article{Aksoy,
-author = {Aksoy, Selim and Haralick, Robert M},
-file = {:Users/lukashanincik/Documents/School/BP/Sources/FeatureScaling.pdf:pdf},
-keywords = {feature normalization,image,image similarity,likelihood ratio,minkowsky metric,retrieval},
-mendeley-groups = {Cytometricy data classification,NN acceleration and improvement},
-number = {October 2000},
-title = {{Feature Normalization and Likelihood-based Similarity Measures for Image Retrieval}}
+title = "Feature normalization and likelihood-based similarity measures for image retrieval",
+journal = "Pattern Recognition Letters",
+volume = "22",
+number = "5",
+pages = "563 - 582",
+year = "2001",
+note = "Image/Video Indexing and Retrieval",
+issn = "0167-8655",
+doi = "https://doi.org/10.1016/S0167-8655(00)00112-4",
+url = "http://www.sciencedirect.com/science/article/pii/S0167865500001124",
+author = "Selim Aksoy and Robert M. Haralick",
+keywords = "Feature normalization, Minkowsky metric, Likelihood ratio, Image retrieval, Image similarity",
+abstract = "Distance measures like the Euclidean distance are used to measure similarity between images in content-based image retrieval. Such geometric measures implicitly assign more weighting to features with large ranges than those with small ranges. This paper discusses the effects of five feature normalization methods on retrieval performance. We also describe two likelihood ratio-based similarity measures that perform significantly better than the commonly used geometric approaches like the Lp metrics."
 }
 @article{HilbSpace,
   title = {Statistical distance and Hilbert space},
@@ -197,15 +205,16 @@ title = {{Feature Normalization and Likelihood-based Similarity Measures for Ima
   url = {https://link.aps.org/doi/10.1103/PhysRevD.23.357}
 }
 @article{Alvarez2012,
-archivePrefix = {arXiv},
-arxivId = {arXiv:1106.6251v2},
-author = {Alvarez, Mauricio A and Sheffield, The and Neuroscience, Translational},
-eprint = {arXiv:1106.6251v2},
-file = {:Users/lukashanincik/Documents/School/BP/Sources/reproducing{\_}kernel.pdf:pdf},
-mendeley-groups = {Cytometricy data classification},
-pages = {1--37},
-title = {{Kernels for Vector-Valued Functions : a Review}},
-year = {2012}
+url = {http://dx.doi.org/10.1561/2200000036},
+year = {2012},
+volume = {4},
+journal = {Foundations and Trends® in Machine Learning},
+title = {Kernels for Vector-Valued Functions: A Review},
+doi = {10.1561/2200000036},
+issn = {1935-8237},
+number = {3},
+pages = {195-266},
+author = {Mauricio A. Álvarez and Lorenzo Rosasco and Neil D. Lawrence}
 }
 @article{formNorm,
 title = "The Frobenius norm and the commutator",

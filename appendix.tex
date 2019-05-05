@@ -1,6 +1,10 @@
 \newpage
 \appendix
 \pagenumbering{roman}
+%\titleformat{\chapter}{\huge\normalfont\bfseries}{Príloha~\thechapter: }{-5cm}{\tikz \newline \vspace{0pt}}
+\titleformat{\chapter}{\huge\normalfont\bfseries}{Príloha~\thechapter: }{5mm}{\huge}
+
+
 \chapter{Experimenty so syntetickým gradientom}
 \label{SGexperimets}
 % pravdepodobne nepravdivá informácia
@@ -14,13 +18,13 @@ Pri klasifikácii sa v etape trénovania neurónovej siete použila modifikácia
 V tomto experimente bolo dokopy vykonaných 100 rôznych trénovaní, pri ktorých bola zvolená vždy iná hodnota $p_{update}$ z rozsahu $\langle 0, 1\rangle$. Výsledky tohto experimentu je možné vidieť na obrázku \ref{vysledkyExperimentuBpLambda} a to \textbf{s} a \textbf{bez} použitia dodatočnej informácie $c$. Ako si môžeme všimnúť, pri využití spätne šíreného gradientu s pravdepodobnosťou $p\textsubscript{update}=0.2$ je neurónová sieť stále schopná klasifikovať vstupné dáta s chybou len 2\%. Prekvapivo, v prípade syntetického gradientu generovaného s využitím informácie o skutočnej hodnote $c$ sa pri vyššej hodnote $p\textsubscript{update}$ znižuje presnosť neurónovej siete \cite{Jaderberg2016}.
 \fi
 
-Zdroj \cite{Jaderberg2016} uviedol experiment, v ktorom použil konvolučnú neurónovú sieť na spracovanie dátovej sady MNIST. Jedná sa o dátovu sadu obsahujúcu rukou-písané čísla od 0 do 9 \cite{yann1998mnist}. Cieľom konvolučnej neurónovej siete bola klasifikácia jednotlivých rukou-písaných číslic na numerické hodnoty 0-9. V etape trénovania bola použitá metóda ktorá kombinuje využitie syntetického gradientu a spätne šíreného gradientu. Pri tomto experimente si každá vrstva upravila svoje váhy vždy za pomoci syntetického gradientu obdržaného od DNI. Po úplnom dokončení fázy dopredného šírenia sa vykonala fáza spätného šírenia chyby vždy s pravdepodobnosťou $p_{update}$. Vo fáze spätného šírenia chyby boli upravované váhy jednotlivých vrstiev a aj váhy modulov syntetického gradientu. DNI vypĺňa komunikačnú medzeru spätného šírenia chyby a zabezpečuje úpravu váh v každej iterácii trénovania \cite{Jaderberg2016}.
+Zdroj \cite{Jaderberg2016} uviedol experiment, v ktorom použil konvolučnú neurónovú sieť na spracovanie dátovej sady MNIST. Jedná sa o dátovú sadu obsahujúcu rukou-písané čísla od 0 do 9 \cite{yann1998mnist}. Cieľom konvolučnej neurónovej siete bola klasifikácia jednotlivých rukou-písaných číslic na numerické hodnoty 0-9. V etape trénovania bola použitá metóda ktorá kombinuje využitie syntetického gradientu a spätne šíreného gradientu. Pri tomto experimente si každá vrstva upravila svoje váhy vždy za pomoci syntetického gradientu obdržaného od DNI. Po úplnom dokončení fázy dopredného šírenia sa vykonala fáza spätného šírenia chyby vždy s pravdepodobnosťou $p_{update}$. Vo fáze spätného šírenia chyby boli upravované váhy jednotlivých vrstiev a aj váhy modulov syntetického gradientu. DNI vypĺňa komunikačnú medzeru spätného šírenia chyby a zabezpečuje úpravu váh v každej iterácii trénovania \cite{Jaderberg2016}.
 
 Experiment tiež pozoroval, aký vplyv na neurónovú sieť má dodatočná informácia $c$ pre modul syntetického gradientu. Ako dodatočná informácia bola poskytnutá supervízia, skutočná hodnota rukou-písanej číslice.
 
 V tomto experimente bolo dokopy vykonaných 100 trénovaní, pri ktorých bola zvolená vždy iná hodnota $p\textsubscript{update}$ z rozsahu $\langle 0, 1\rangle$. Výsledky experimentu je možné vidieť z grafov na Obrázku \ref{vysledkyExperimentuBpLambda}. 
 
-Neurónová sieť je schopná klasifikovať jednotlivé dátove vzorky s chybou 2\% už v prípade pravdepodobnosti aktivácie spätného šírenia chyby $p_{update}=0,2$ \cite{Jaderberg2016}. Využitím dodatočnej informácie $c$ pre moduly syntetického gradientu sa zvyšovaním pravdepodobnosti $p_{update}$ znižuje presnosť neurónovej siete.
+Neurónová sieť je schopná klasifikovať jednotlivé dátové vzorky s chybou 2\% už v prípade pravdepodobnosti aktivácie spätného šírenia chyby $p_{update}=0,2$ \cite{Jaderberg2016}. Využitím dodatočnej informácie $c$ pre moduly syntetického gradientu sa zvyšovaním pravdepodobnosti $p_{update}$ znižuje presnosť neurónovej siete.
 
 
 \begin{figure}
@@ -48,7 +52,7 @@ Zdroj \cite{Jaderberg2016} nakoniec uviedol, že vykonal experiment pri ktorom t
 
 \begin{table}
 % v tabulke sa popis zvykne davat nad tabulku
-\caption[Porovnanie chyby neurónovej siete trénovanej rôznymi typmi gradientu]{Tabuľka zobrazuje chybu predikcie konvulenčnej neurónovej siete trénovanej na rozpoznávanie obrazu z dátových sád MNIST a CIFAR-10. Prvý stĺpec udáva informáciu o hĺbke neurónovej siete, kde daná hodnota predstavuje počet skrytých vrstiev. Pre každú dátovú sadu bola použitá tá istá neurónová sieť. Tabuľka obsahuje hodnoty chyby neurónovej siete využívajúcej gradient šírený spätnou propagáciou chyby (Bprop), syntetický gradient (DNI) alebo syntetický gradient obohátený o dodatočnú informáciu $c$ (cDNI) \cite{Jaderberg2016}.}
+\caption[Porovnanie chyby neurónovej siete trénovanej rôznymi typmi gradientu]{Tabuľka zobrazuje chybu predikcie konvolučnej neurónovej siete trénovanej na rozpoznávanie obrazu z dátových sád MNIST a CIFAR-10. Prvý stĺpec udáva informáciu o hĺbke neurónovej siete, kde daná hodnota predstavuje počet skrytých vrstiev. Pre každú dátovú sadu bola použitá tá istá neurónová sieť. Tabuľka obsahuje hodnoty chyby neurónovej siete využívajúcej gradient šírený spätnou propagáciou chyby (Bprop), syntetický gradient (DNI) alebo syntetický gradient obohatený o dodatočnú informáciu $c$ (cDNI) \cite{Jaderberg2016}.}
 %id tabulky
 \label{compareDNIandCDNI}
 % tu zacina samotna tabulka
@@ -70,7 +74,7 @@ Zdroj \cite{Jaderberg2016} nakoniec uviedol, že vykonal experiment pri ktorom t
 \end{center}
 \end{table}
 
-Na tento experiment sme sa zamerali predovšetkým preto, aby sme zistili aký vplyv má syntetický gradient na neurónovú sieť, ktorá vykonáva lineárnu klasifikáciu realizovanú dávkovou normalizáciou a ReLU. Skutočnosť, že implementácia syntetického gradientu na takýto typ neurónovej siete nemá signifikantne negativný vplyv na presnosť neurónovej siete je pre nás pozitívna. Pozitívna vzhľadom k tomu, že ďalšia časť práce sa venuje reziduálnym sieťam ktoré využívajú dávkovú normalizáciu a ReLU. V tomto ohľade je pre nás nevyhnutné disponovať informáciou o tom, aký efekt syntetického gradientu na takúto sieť máme očakávať.
+Na tento experiment sme sa zamerali predovšetkým preto, aby sme zistili aký vplyv má syntetický gradient na neurónovú sieť, ktorá vykonáva lineárnu klasifikáciu realizovanú dávkovou normalizáciou a ReLU. Skutočnosť, že implementácia syntetického gradientu na takýto typ neurónovej siete nemá signifikantne negatívny vplyv na presnosť neurónovej siete je pre nás pozitívna. Pozitívna vzhľadom k tomu, že ďalšia časť práce sa venuje reziduálnym sieťam ktoré využívajú dávkovú normalizáciu a ReLU. V tomto ohľade je pre nás nevyhnutné disponovať informáciou o tom, aký efekt syntetického gradientu na takúto sieť máme očakávať.
 
 \chapter{Experimenty modifikácie reziduálneho bloku}
 
@@ -183,7 +187,7 @@ Jednotlivé vrstvy DAE sú zapuzdrené v objekte triedy \mintinline{Python}{Mode
 
 Výstupom funkcie \mintinline{Python}{trainDAE()} je natrénovaný DAE, ktorý je možné použiť na odšumenie vstupných dát.
 
-\section{Odšumenie vstupných dát pomocou ošumujúceho autoenkódera}
+\section{Odšumenie vstupných dát pomocou odšumujúceho autoenkódera}
 \label{predict_DAE}
 
 Odšumenie vstupných dát pomocou DAE je realizované funkciou \mintinline{Python}{predictDAE()}, ktorá prijíma ako parametre dáta ktoré budú odšumené, natrénovaný autoenkóder použitý na odšumenie vstupných dát a identifikátor potreby odšumenia dát. Ako sme uviedli v Prílohe \ref{train_DAE}, natrénovaný autoenkóder je objektom triedy \mintinline{Python}{Model}, obsiahnutej v knižnici \mintinline{Python}{Keras}. Odšumenie dát je vykonané volaním metódy \mintinline{Python}{predict()} triedy \mintinline{Python}{Model}, ktorá prijíma ako parameter vstupnú vzorku, ktorá má byť daným autoenkóderom odšumená. 
@@ -199,7 +203,7 @@ Výstupom funkcie \mintinline{Python}{predictDAE()} je inštancia triedy \mintin
 
 Trénovanie bunkového klasifikátora je realizované volaním funkcie \mintinline{Python}{trainClassifier()}, obsiahnutej v súbore \mintinline{Python}{feedforwardClassifier.py}. Funkcia ako parametre prijíma trénovaciu vzorku (v našom prípade referenčná vzorka), formát súboru v ktorom sú uložené vzorky dátovej sady, identifikátor referenčnej vzorky v dátovej sade, zoznam veľkostí skrytých vrstiev klasifikátora, typ aktivačnej funkcie skrytých vrstiev klasifikátora, hodnotu $l_2$ regularizácie váh jednotlivých skrytých vrstiev klasifikátora a cestu, kde bude novonatrénovaný klasifikátor uložený.
 
-V úvode trénovania sú z trénovacej vzorky odstránené všekty záznamy (bunky), ktoré prislúchajú triede $0$ (trida neurčitých/neznámych buniek). Odstránenie neurčitých buniek umožňuje trénovať klasifikátor len na bunkách, ktorých trieda je známa a klasifikátor je tak schopný lepšie predikovať známe triedy jednotlivých buniek. 
+V úvode trénovania sú z trénovacej vzorky odstránené všetky záznamy (bunky), ktoré prislúchajú triede $0$ (trieda neurčitých/neznámych buniek). Odstránenie neurčitých buniek umožňuje trénovať klasifikátor len na bunkách, ktorých trieda je známa a klasifikátor je tak schopný lepšie predikovať známe triedy jednotlivých buniek. 
 
 Bunkový klasifikátor je zostrojený z jednej vstupnej vrstvy (objekt triedy \mintinline{Python}{Input}, obsiahnutý v knižnici \mintinline{Python}{Keras}) a troch skrytých plneprepojených váhových vrstvách (objekt triedy \mintinline{Python}{Dense}, obsiahnutý v knižnici \mintinline{Python}{Keras}). Veľkosť vstupnej vrstvy je rovná počtu parametrov trénovacej vzorky (v našom prípade počet markerov v referenčnej vzorke). Veľkosti skrytých vrstiev sú inicializované na základe zoznamu veľkostí skrytých vrstiev poskytnutého pri volaní funkcie \mintinline{Python}{trainClassifier()}. Jednotlivé skryté vrstvy vykonávajú $l_2$ regularizáciu váh s hodnotou $l_2$ regularizácie uvedenej v parametroch volania funkcie \mintinline{Python}{trainCLassifier()}. Aktivačná funkcia skrytých vrstiev je definovaná v parametroch pri volaní funkcie \mintinline{Python}{trainClassifier()}.
 
@@ -207,14 +211,14 @@ Po deklarovaní skrytých vrstiev nasleduje deklarácia výstupnej vrstvy. Výst
 
 Deklarované vrstvy klasifikátora (počnúc vstupnou vrstvou a končiac výstupnou vrstvou) sú zapuzdrené v objekte triedy \mintinline{Python}{Model}, obsiahnutej v knižnici \mintinline{Python}{Keras}. Zostrojenie modelu klasifikátora je realizované metódou \mintinline{Python}{compile()}, obsiahnutou v triede \mintinline{Python}{Model}. Funkcia \mintinline{Python}{compile()} prijíma ako parametre metódu úpravy váh (v našom prípade RMSPropOptimizer \cite{Goh1995}) a typ chybovej funkcie (v našom prípade funkcia riedkej kategorickej krížovej entropie (SCCE, z angl. Sparse Categorical CrossEntropy)).
 
-Zostrojený model je následne trénovaný metódou \mintinline{Python}{fit()}, obsiahnutou v triede \mintinline{Python}{Model}. Trénovanie bunkového klasifikátore je realizované 80 iteráciami s veľkosťou trénovacej dávky 128. Trénovanie klasifikátora využíva dynamický krok učenia definovaný ako opisuje \ref{dyna_lr}. Pretrénovanie klasifikátora je ošetrené implementáciou funkcie predčasného zastavenia \mintinline{Python}{EarlyStopping()}, obsiahnutej v knižnici \mintinline{Python}{Keras}.
+Zostrojený model je následne trénovaný metódou \mintinline{Python}{fit()}, obsiahnutou v triede \mintinline{Python}{Model}. Trénovanie bunkového klasifikátora je realizované 80 iteráciami s veľkosťou trénovacej dávky 128. Trénovanie klasifikátora využíva dynamický krok učenia definovaný ako opisuje \ref{dyna_lr}. Pretrénovanie klasifikátora je ošetrené implementáciou funkcie predčasného zastavenia \mintinline{Python}{EarlyStopping()}, obsiahnutej v knižnici \mintinline{Python}{Keras}.
 
 Natrénovaný klasifikátor je uložený na disk. Výstupom funkcie \mintinline{Python}{trainClassifier()} je natrénovaný klasifikátor, resp. objekt triedy \mintinline{Python}{Model}.
 
 \section{Gatovanie pomocou bunkového klasifikátora}
 \label{gateFF}
 
-Gatovanie, resp. klasifikovanie jednotlivých buniek vsupnej vzorky do diskrétnych skupín je realizované funkciou \mintinline{Python}{prediction()}, obsiahnutou v súbore \mintinline{Python}{feedforwardClassifier.py}. Funkcia \mintinline{Python}{prediction()} prijíma ako parametre vzorku dát, ktoré budú klasifikované (gatované), formát súboru vzorky v dátovej sade, identifikátor referenčnej vzorky a natrénovaný klasifikátor, ktorý bude použitý na klasifikovanie vstupnej vzorky.
+Gatovanie, resp. klasifikovanie jednotlivých buniek vstupnej vzorky do diskrétnych skupín je realizované funkciou \mintinline{Python}{prediction()}, obsiahnutou v súbore \mintinline{Python}{feedforwardClassifier.py}. Funkcia \mintinline{Python}{prediction()} prijíma ako parametre vzorku dát, ktoré budú klasifikované (gatované), formát súboru vzorky v dátovej sade, identifikátor referenčnej vzorky a natrénovaný klasifikátor, ktorý bude použitý na klasifikovanie vstupnej vzorky.
 
 Ako je uvedené v Prílohe \ref{trainFF}, klasifikátor je inštanciou triedy \mintinline{Python}{Model}, obsiahnutej v knižnici \mintinline{Python}{Keras}. Klasifikovanie vzorky je realizované volaním metódy \mintinline{Python}{predict()} nad daným objektom klasifikátora. Metóda \mintinline{Python}{predict()} ako parameter prijíma vzorku dát, ktoré majú byť predikované príslušným modelom. Výstupom metódy \mintinline{Python}{predict()} je hodnota pravdepodobností priradenia každej buniek do jednotlivých tried (napr. [0.27, 0.18, 0.04. 0.79]). V ďalšom kroku je vybraný index tej hodnoty pravdepodobnosti, ktorá je pre každú bunku najvyššia (vo vyššie uvedenom prípade ide o index 3). Všetky vybrané indexy sú následne inkrementované o 1 aby bol dodržaný pôvodný konsenzus identifikátorov bunkových tried (trieda ktorá má identifikátor 1 sa nachádza na indexe 0 a preto je potrebné inkrementovať všetky indexy o hodnotu 1). Následne všetky bunky, ktorých najvyššia pravdepodobnosť priradenia do nejakej skupiny je nižšia ako hodnota 0.4, sú priradené do skupiny s identifikátorom 0 (skupina neurčitých/neznámych buniek).
 
@@ -224,7 +228,7 @@ Výstupom funkcie \mintinline{Python}{prediction()} je hodnota presnosti gatovan
 
 Táto kapitola opisuje sekvenciu krokov, ktoré je potrebné vykonať za účelom korektného spustenia programu. Používateľská príručka sa orientuje na spusteniu programu na platforme \textit{Mac OS}.
 
-Prvý krok predstavuje nainštalovanie spúšťacej jednoty programovacieho jazyka \textit{Python 3}. Na nainštalovanie spúšťacej jednotky je najprv potrebné nainštalovať správcu balíkov pre systém \textit{Mac OS}, \textit{Homebrew}. Inštalácia správcu balíkov \textit{Homebrew} je realizovaná nasledujúcim príkazom:
+Pred spustením programu je potrebné nainštalovať všetky potrebné závislosti, ktoré vyžaduje naša implementácia. Prvý krok predstavuje nainštalovanie spúšťacej jednotky programovacieho jazyka \textit{Python 3}. Kvôli nainštalovaniu spúšťacej jednotky je potrebné nainštalovať správcu balíkov pre systém \textit{Mac OS}, \textit{Homebrew}. Inštalácia správcu balíkov \textit{Homebrew} je realizovaná nasledujúcim príkazom:
 
 \begin{Verbatim}[breaklines=true, breakanywhere=true]
 ruby -e "\$(curl -fsSLhttps://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -236,7 +240,7 @@ Pomocou správcu balíkov \textit{Homebrew} je možné nainštalovať spúšťac
 brew install python
 \end{Verbatim}
 
-Správca balíkov \textit{Homebrew} pri inštalácii spúšťacej jednotky programovacieho jazyka \textit{Python} nainštaluje aj správcu balíkov jazyka \textit{Python}, \mintinline{Python}{pip}. Správca balíkov \mintinline{Python}{pip} umožňuje sťahovať všetky potrebné knižnice a rozšírenia programovacieho jazyka \textit{Python}. Nasledujúci zoznam opisuje všetky knižnice ktoré je potrebné nainštalovať pred spustením programu a príkazy, ktorými je možné dané knižnice nainštalovať.
+Správca balíkov \textit{Homebrew} pri inštalácii spúšťacej jednotky programovacieho jazyka \textit{Python 3} nainštaluje aj správcu balíkov jazyka \textit{Python}, \mintinline{Python}{pip}. Správca balíkov \mintinline{Python}{pip} umožňuje sťahovať všetky potrebné knižnice a rozšírenia programovacieho jazyka \textit{Python}. Nasledujúci zoznam opisuje všetky knižnice ktoré je potrebné nainštalovať pred spustením programu a príkazy, ktorými je možné dané knižnice nainštalovať.
 
 \textbf{Keras}
 \begin{Verbatim}[breaklines=true, breakanywhere=true]
@@ -279,7 +283,7 @@ pip install tensorflow
 \end{Verbatim}
 
 \begin{sloppypar}
-Po nainštalovaní všetkých vyššieuvedených knižníc je možné prejsť k samotnému spusteniu programu. Z priloženého kompaktného disku skopírujeme do počítača adresár \mintinline{Python}{BP_Hanincik}. V konzole sa pomocou príkazu \mintinline{Python}{cd} presunieme do novovytvorenej kópie adresára \mintinline{Python}{BP_Hanincik}. Následne sa presunieme do podadresára \mintinline{Python}{src} (znovu používame príkaz \mintinline{Python}{cd}). V adresári \mintinline{Python}{src} sa nachádza spustiteľný program \mintinline{Python}{DeepCyTOF.py}, napísaný v programovacom jazyku \mintinline{Python}{Python}. Program \mintinline{Python}{DeepCyTOF.py} spustíme príkazom 
+Po nainštalovaní všetkých vyššie uvedených knižníc je možné prejsť k samotnému spusteniu programu. Z priloženého kompaktného disku skopírujeme do počítača adresár \mintinline{Python}{BP_Hanincik}. V konzole sa pomocou príkazu \mintinline{Python}{cd} presunieme do novovytvorenej kópie adresára \mintinline{Python}{BP_Hanincik}. Následne sa presunieme do podadresára \mintinline{Python}{src} (znovu používame príkaz \mintinline{Python}{cd}). V adresári \mintinline{Python}{src} sa nachádza spustiteľný program \mintinline{Python}{DeepCyTOF.py}, napísaný v programovacom jazyku \mintinline{Python}{Python}. Program \mintinline{Python}{DeepCyTOF.py} spustíme príkazom 
 \end{sloppypar}
 
 \begin{Verbatim}[breaklines=true, breakanywhere=true]
@@ -292,13 +296,18 @@ Pri spustení je potrebné skontrolovať používateľské práva k súboru \min
     \item zdrojové vzorky kalibrované pomocou MMD-ResNet využívajúcej algoritmus syntetického gradientu (vo formáte \mintinline{Python}{csv})
     \item predikované triedy jednotlivých buniek zdrojových vzoriek (vo formáte \mintinline{Python}{csv})
     \item vizualizácia vývoja hodnoty MMD v čase trénovania MMD-ResNet (vo formáte \mintinline{Python}{png})
-    \item vizualizácia vývoja hodnoty MMD v jednotlivých iteráciach trénovania MMD-ResNet (vo formáte \mintinline{Python}{png})
-    \item vizualizácia vývoja \textit{F1 skóre} v priebehu trénovania MMD-ResNet (vo formáte \mintinline{Python}{png})
+    \item vizualizácia vývoja hodnoty MMD v jednotlivých iteráciách trénovania MMD-ResNet (vo formáte \mintinline{Python}{png})
+    \item vizualizácia vývoja \textit{F1 skóre} v jednotlivých iteráciách trénovania MMD-ResNet (vo formáte \mintinline{Python}{png})
+    \item vizualizácia vývoja \textit{F1 skóre} v čase trénovania MMD-ResNet (vo formáte \mintinline{Python}{png})
 \end{itemize}
 
 Každý z vytvorených súborov sa nachádza v samostatnom adresári s názvom korešpondujúcim názvu prislúchajúcej vzorky.
 
-\chapter{Plán práce na riešení projektu}
+\begin{sloppypar}
+V prípade spustenia programu na inej platforme ako \textit{Mac OS}, je nevyhnutné disponovať spúšťacou jednotkou programovacieho jazyka \textit{Python 3}. Následne je potrebné nainštalovať všetky vyššie uvedené knižnice ako rozšírenia jazyka \textit{Python 3}. Spustenie programu je v závislosti od použitej platformy realizované spustením skriptu \mintinline{Python}{DeepCyTOF.py} pomocou spúšťacej jednotky jazyka \textit{Python 3}.
+\end{sloppypar}
+
+\chapter{Vyjadrenie k plneniu plánu práce}
 \begin{enumerate}
     \item Implementácia a analýza metódy DeepCyTOF (December)
     \item Implementácia syntetického gradientu v reziduálnej sieti MMD-ResNet (Január-Február)
@@ -312,7 +321,7 @@ Následne sme postupovali podľa plánu a všetok čas sme investovali do zlepš
 
 Okrem študentskej konferencie \textit{IIT.SRC 2019} sme našu prácu prezentovali ešte trikrát a to na rôznych seminároch. Výsledná práca zahŕňa splnenie všetkých stanovených požiadaviek v požadovanom rozsahu.
 
-\includepdf[scale=1, pages=1, pagecommand={\section{Príspevok do študentskej výskomnej konferencie IIT.SRC 2019}\label{IIT_SRC}}]{IIT_SRC.pdf}
+\includepdf[scale=1, pages=1, pagecommand={\section{Príspevok do študentskej výskumnej konferencie IIT.SRC 2019}\label{IIT_SRC}}]{IIT_SRC.pdf}
 \includepdf[pages=2]{IIT_SRC.pdf}
 \includepdf[pages=3]{IIT_SRC.pdf}
 \includepdf[pages=4]{IIT_SRC.pdf}

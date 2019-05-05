@@ -18,13 +18,13 @@ Vzhľadom k tomu, že v celom systéme je vždy len jedna vrstva aktívna, tak j
 \end{itemize}
 Závislosť jednotlivých vrstiev na iných vrstvách zapríčiňuje sekvenčné (synchrónne) fungovanie neurónovej siete. Synchrónny prístup spôsobuje, že všetky vrstvy, ktoré nevykonávajú úpravu váh alebo transformáciu dát sú nečinné \cite{Jaderberg2016}.
 
-V ďalších častiach uvedieme viac o tom, ako efektívne zamestnať jednotlivé vrstvy zatiaľ čo iné vrstvy vykonávajú prisluchajúce operácie. Vysvetlíme, ako paralelizovať výpočtové kroky spätného šírenia chyby a ako odstrániť uzamknutie úpravy váh a uzamknutie v smere spätného šírenia chyby.
+V ďalších častiach uvedieme viac o tom, ako efektívne zamestnať jednotlivé vrstvy zatiaľ čo iné vrstvy vykonávajú prislúchajúce operácie. Vysvetlíme, ako paralelizovať výpočtové kroky spätného šírenia chyby a ako odstrániť uzamknutie úpravy váh a uzamknutie v smere spätného šírenia chyby.
 
 \section{Funkcia syntetického gradientu}
 \label{understanding_SG} % id kapitoly pre prikaz ref
 Trénovanie neurónovej siete pozostáva zo sekvenčných krokov, ktoré obmedzujú potenciál neurónovej siete. Vrstvy, ktoré nevykonávajú transformáciu dát alebo úpravu váh sú nútené čakať na vrstvy, na ktorých sú závislé. Vrstva \textit{i} vo fáze dopredného šírenia je nútená čakať na vrstvu \textit{i-1} a vo fáze spätné šírenia chyby na vrstvu \textit{i+1} \cite{Jaderberg2016}. 
 
-Vrstva $i+1$ vykonáva transformáciu dát, až keď obdrží transformované dáta od vrstvy $i$. Vrstva $i$ je schopná úpravy váh, akonáhle odošle transformované dáta. Tento úkon nie je možné vykonať vzhľadom na \textit{uzamknutie úpravy váh} a \textit{uzamknutie v smere spätného šírenia chyby}. Z dôvodu uzamknutia vypočtu, vrstva $i$ upravuje váhy až po získaní hodnoty chyby od vrstvy $i+1$ \cite{Jaderberg2016}.
+Vrstva $i+1$ vykonáva transformáciu dát, až keď obdrží transformované dáta od vrstvy $i$. Vrstva $i$ je schopná úpravy váh, akonáhle odošle transformované dáta. Tento úkon nie je možné vykonať vzhľadom na \textit{uzamknutie úpravy váh} a \textit{uzamknutie v smere spätného šírenia chyby}. Z dôvodu uzamknutia výpočtu, vrstva $i$ upravuje váhy až po získaní hodnoty chyby od vrstvy $i+1$ \cite{Jaderberg2016}.
 
 
 Úprava váh je realizovaná pomocou gradientu $\partial L/\partial h_i$, kde $L$ je chybová funkcia neurónovej siete a $h_i$ sú dáta transformované aktivačnou funkciou prislúchajúcou vrstve $i$ \cite{Goh1995}. Vyššie sme uviedli, že váhy jednotlivých vrstiev sa upravujú vo fáze spätného šírenia chyby. Algoritmus spätného šírenia chyby na úpravu váh vyžaduje hodnotu chyby predikcie z výstupu neurónovej siete. Získavanie hodnoty predikcie z výstupu neurónovej siete zapríčiňuje všetky tri typy uzamknutia výpočtu neurónovej siete \cite{Goh1995, Czarnecki2017, Jaderberg2016}.
@@ -86,7 +86,7 @@ Algoritmus syntetického gradientu, ktorý je využitý na trénovanie neurónov
 
 \begin{enumerate}
     \item Vrstva $f_i$ odošle transformované dáta $h_i$ vrstve $f_{i+1}$ a modulu syntetického gradientu $M_{i+1}$.
-    \item Modul syntetického gradientu $M_{i+1}$ generuje syntetický gradiedient $\hat{\delta}_i=M_{i+1}(h_i)$.
+    \item Modul syntetického gradientu $M_{i+1}$ generuje syntetický gradient $\hat{\delta}_i=M_{i+1}(h_i)$.
     \item Syntetický gradient $\hat{\delta}_i$ je spätne šírený vrstve $f_i$, ktorá okamžite upraví svoje váhy $\theta_i$.
     \item Vrstva $f_{i+1}$ vykoná transformáciu obdržaných dát, ktoré dopredne šíri ďalším vrstvám. Akonáhle vrstva $f_{i+1}$ obdrží gradient (bez ohľadu na to, či syntetický alebo skutočný), upraví svoje váhy $\theta_{i+1}$ a tento gradient posiela modulu syntetického gradientu $M_{i+1}$.
     \item Modul syntetického gradientu $M_{i+1}$ obdržaný gradient $\delta_i$ považuje za supervíziu (očakávanú hodnotu). Modul syntetického gradientu $M_{i+1}$ si na základe obdržaného gradientu $\delta_i$ upraví váhy $\phi_{i+1}$ tak, aby čo najviac minimalizoval $L^2$ vzdialenosť medzi predikovaným gradientom $\hat{\delta}_i$ a skutočným gradientom $\delta_i$, ${\left\Vert \hat{\delta}\textsubscript{i} - \delta\textsubscript{i}\right\Vert}_{2}^2$.
@@ -138,7 +138,7 @@ Na úpravu váh $\theta_i$ vrstvy $i$ je použitý $\lambda$-parametrizovaný gr
     \frac{\partial L}{\partial \theta\textsubscript{i}}=\frac{\partial L}{\partial h\textsubscript{i}}\frac{\partial h\textsubscript{i}}{\partial\theta\textsubscript{i}}\approx g\textsubscript{i}\frac{\partial h\textsubscript{i}}{\partial \theta\textsubscript{i}}
 \end{equation}
 
-Modul syntetického gradientu $M_i$ na úpravu svojích váh $\phi_{i}$ používa vždy $\lambda$-parametrizovaný gradient. $\lambda$-parametrizovaný gradient je použitý ako supervízia $\delta_i$ pre modul syntetického gradientu $M_i$, $\delta_i=g_{i+1}\frac{\partial h\textsubscript{i+1}}{\partial h_i}=g_i$. Úprava váh $\phi_i$ je realizovaná za účelom minimalizovania kvadratickej chyby predikcie syntetického gradientu $\frac{\partial\bar{L}_{\hat{\delta}_i}}{\partial\phi_i}$, kde $\bar{L}_{\hat{\delta}_i}$ predstavuje kvadratickú chybu predikcie syntetického gradientu $\bar{L}_{\hat{\delta}_i}=(\delta_i-\hat{\delta}_i)^2$ \cite{Jaderberg2016}.
+Modul syntetického gradientu $M_i$ na úpravu svojich váh $\phi_{i}$ používa vždy $\lambda$-parametrizovaný gradient. $\lambda$-parametrizovaný gradient je použitý ako supervízia $\delta_i$ pre modul syntetického gradientu $M_i$, $\delta_i=g_{i+1}\frac{\partial h\textsubscript{i+1}}{\partial h_i}=g_i$. Úprava váh $\phi_i$ je realizovaná za účelom minimalizovania kvadratickej chyby predikcie syntetického gradientu $\frac{\partial\bar{L}_{\hat{\delta}_i}}{\partial\phi_i}$, kde $\bar{L}_{\hat{\delta}_i}$ predstavuje kvadratickú chybu predikcie syntetického gradientu $\bar{L}_{\hat{\delta}_i}=(\delta_i-\hat{\delta}_i)^2$ \cite{Jaderberg2016}.
 
 \begin{figure}
 %vlozenie samotneho obrazku vycentrovaneho a vhodnej velkosti

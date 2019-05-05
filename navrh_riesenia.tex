@@ -26,7 +26,7 @@ V kapitole \ref{residual_learning} sme uviedli, že identitné prepojenie neprid
 
 Architektúra reziduálneho bloku je zachovaná z pôvodnej implementácie (viď Obrázok \ref{MMD-ResNet_arch}). Reziduálny blok pozostáva z dvoch kumulovaných vrstiev, ktoré sekvenčne vykonávajú dávkovú normalizáciu, transformáciu dát pomocou ReLU a finálne váhovanie. Na výstupe jednotlivých reziduálnych blokov nie je vykonávaná žiadna dodatočná nelineárna transformácia.
 
-Architektúra identitného prepojenia je ponechaná z pôvodnej implementácie metódy DeepCyTOF. Identitné prepojenie nebude vykonávať žiadnu dodatočnú transformáciu identického zobrazenia šíreného týmto identitným prepojením. Táto implementácia sa na základe výsledkov experimentov opísaných v Kapitole \ref{implementation}, ukázala ako najoptimálnejšia možnosť. Reziduálna sieť využívajúca takúto architektúru identitného prepojenia dosahovala najvyššiu hodnotu presnosti v porovnaní s rezidualnými sieťami, ktoré využívali iné architektúry identitného prepojenia.
+Architektúra identitného prepojenia je ponechaná z pôvodnej implementácie metódy DeepCyTOF. Identitné prepojenie nebude vykonávať žiadnu dodatočnú transformáciu identického zobrazenia šíreného týmto identitným prepojením. Táto implementácia sa na základe výsledkov experimentov opísaných v Kapitole \ref{implementation}, ukázala ako najoptimálnejšia možnosť. Reziduálna sieť využívajúca takúto architektúru identitného prepojenia dosahovala najvyššiu hodnotu presnosti v porovnaní s reziduálnymi sieťami, ktoré využívali iné architektúry identitného prepojenia.
 
 % opísať ten shit z technických detailov ktoré som vynechal v analýze
 
@@ -53,7 +53,7 @@ kde $P$ je podiel počtu správne klasifikovaných pozitívnych hodnôt a počtu
 
 Alternatívnou metrikou vyhodnocovania je pozorovanie vývoja hodnoty MMD počas trénovania MMD-ResNet využívajúcej metódu syntetického gradientu. Týmto spôsobom je možné lepšie pochopiť správanie vplyvu syntetického gradientu na proces trénovania MMD-ResNet. Pozorovaný vývoj hodnoty MMD je následne možné porovnať s vývojom hodnoty MMD, získaným trénovaním MMD-ResNet s využitím metódy štandardného spätného šírenia chyby.
 
-Pri pozorovaní vývoja hodnoty MMD v procese trénovania MMD-ResNet berieme do úvahy, v akom čase sú dosiahnuté jednotlivé hodnoty MMD. Na základe teoretických znalostí je možné preukázať, že paralelizácia trénovania jednotlivých vrstiev MMD-ResNet vedie k zníženiu výpočtového času potrebného na realizáciu daného trénovania \cite{Jaderberg2016, Czarnecki2017}. Vzhľadom k tomu, že jednotlivé metódy trénovania MMD-Resnet (metóda syntetického gradientu a metóda spätné šírenie chyby) môžu mať odlišnú mieru konvergencie hodnoty MMD, tak je potrebné brať do úvahy aj počet iterácií, ktoré sú potrebné na dosiahnutie jednotlivých hodnôt MMD.
+Pri pozorovaní vývoja hodnoty MMD v procese trénovania MMD-ResNet berieme do úvahy, v akom čase sú dosiahnuté jednotlivé hodnoty MMD. Na základe teoretických znalostí je možné preukázať, že paralelizácia trénovania jednotlivých vrstiev MMD-ResNet vedie k zníženiu výpočtového času potrebného na realizáciu daného trénovania \cite{Jaderberg2016, Czarnecki2017}. Vzhľadom k tomu, že jednotlivé metódy trénovania MMD-ResNet (metóda syntetického gradientu a metóda spätné šírenie chyby) môžu mať odlišnú mieru konvergencie hodnoty MMD, tak je potrebné brať do úvahy aj počet iterácií, ktoré sú potrebné na dosiahnutie jednotlivých hodnôt MMD.
 
 \section{Zhodnotenie návrhu}
 

@@ -19,6 +19,7 @@
 \usepackage{fancyvrb}
 \usepackage{fvextra}
 \usepackage[final]{pdfpages}
+\usepackage{titlesec}
 \usemintedstyle{vs}
 
 \usepackage{scalerel,stackengine}
@@ -62,7 +63,8 @@
 & a softvérového inžinierstva, FIIT STU, \\
 & Bratislava }
 
-\begin{document}     
+\begin{document}
+\titleformat{\chapter}{\huge\normalfont\bfseries}{\thechapter. }{10mm}{\huge}
 \frontmatter
 
 
@@ -323,7 +325,7 @@ Neural networks as a computation model have proved to be an appropriate instrume
 \nocite{*}
 \clearpage
 
-\bibliographystyle{plain}
+\bibliographystyle{acm}
 \bibliography{library} 
 
 % -------------------
